@@ -61,13 +61,20 @@ do () ->
       for i, v of @_necessaryExps
         return parseInt(i, 10) if v > 0
 
+    _getIndexByLevel: (level) ->
+      level - 1
+
     getExp: -> @_exp
 
+    getTotalNecessaryExp: (fromLevel, toLevel) ->
+      total = 0
+      for level in [(fromLevel + 1)..toLevel]
+        idx = @_getIndexByLevel(level)
+        total += @_necessaryExps[idx]
+      total
+
     getMaxExp: ->
-      t = 0
-      for v in @_necessaryExps
-        t += v
-      t
+      @getTotalNecessaryExp(@getMinLevel(), @getMaxLevel())
 
 
   # Exports
@@ -117,13 +124,6 @@ do () ->
 #    /** 現LVのみを返す */
 #    kls.prototype.getLv = function(){
 #        return this.getLvInfo()[0];
-#    };
-#
-#    /** あるLvからあるLvまで上がるのに必要な合計経験値を返す */
-#    kls.prototype.calculateTotalNecessaryExp = function(fromLv, toLv){
-#        var t = 0, i;
-#        for (i = fromLv + 1; i <= toLv; i++) { t += this._necessaryExps[i - 1] };
-#        return t;
 #    };
 #
 #    /** 経験値を得る, @return false=LVUPしなかった arr=LVUPした場合にその情報 */

@@ -91,7 +91,8 @@ describe('RPGLevel Instance ::', ->
 
     it('getMaxExp', ->
       lv = new RPGLevel
-      lv.defineExpTable([0, 1, 2, 4, 8])
-      expect(lv.getMaxExp()).to.be(1 + 2 + 4 + 8)
+      lv.defineExpTable([0, 1, 2, 4, 8, 16])
+      expect(lv.getTotalNecessaryExp(2, 4)).to.be(2 + 4)
+      expect(lv.getMaxExp()).to.be(1 + 2 + 4 + 8 + 16)
     )
 )
