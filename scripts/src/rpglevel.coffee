@@ -37,9 +37,9 @@ do () ->
       opts =
         minLevel: 1
         maxLevel: 99
-      opts[k] = v for k of options
+      opts[k] = v for k, v of options
 
-      @_necessaryExps = for level in [opts.minLevel..opts.maxLevel]
+      @_necessaryExps = for level in [1..opts.maxLevel]
         if level <= opts.minLevel
           0
         else

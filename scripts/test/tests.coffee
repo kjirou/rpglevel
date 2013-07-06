@@ -34,6 +34,15 @@ describe('Instance Properties ::', ->
       lv.defineExpTable((level) -> level * 2)
       expect(lv._necessaryExps[1]).to.be(4)
       expect(lv._necessaryExps[2]).to.be(6)
+
+      # Use options
+      lv = new RPGLevel
+      lv.defineExpTable(((level) -> level), {
+        minLevel: 50
+        maxLevel: 55
+      })
+      expect(lv._necessaryExps[49]).to.be(0)
+      expect(lv._necessaryExps.length).to.be(55)
     )
 
     it('getExp', ->
