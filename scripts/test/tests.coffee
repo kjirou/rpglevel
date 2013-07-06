@@ -6,14 +6,14 @@ else
   RPGLevel = @RPGLevel
 
 
-describe('Class Properties ::', ->
+describe('RPGLevel Class ::', ->
     it('VERSION', ->
       expect(RPGLevel.VERSION).to.match(/^\d+\.\d+.\d+(?:\.\d+)?$/)
     )
 )
 
 
-describe('Instance Properties ::', ->
+describe('RPGLevel Instance ::', ->
     it('Define Exp-Table directly', ->
       lv = new RPGLevel
       lv.defineExpTable([0, 1, 2, 3])
@@ -44,7 +44,17 @@ describe('Instance Properties ::', ->
       expect(lv._necessaryExps[49]).to.be(0)
       expect(lv.getMaxLevel()).to.be(55)
 
-      # Use sub data in formula
+      # Use formula's sub data
+      lv = new RPGLevel
+      lv.defineExpTable((level, data) ->
+        expect(data.minLevel).to.be(1)
+        expect(data.startLevel).to.be(2)
+        expect(data.maxLevel).to.be(3)
+        1
+      , {
+        startLevel: 2
+        maxLevel: 3
+      })
     )
 
     it('getExp', ->
