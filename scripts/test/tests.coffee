@@ -83,16 +83,36 @@ describe('RPGLevel Instance ::', ->
       expect(lv.getStartLevel()).to.be(5)
     )
 
-    it('getExp', ->
-      lv = new RPGLevel
-      lv._exp = 10
-      expect(lv.getExp()).to.be(lv._exp)
-    )
-
-    it('getMaxExp', ->
+    it('getTotalNecessaryExp / getMaxExp', ->
       lv = new RPGLevel
       lv.defineExpTable([0, 1, 2, 4, 8, 16])
       expect(lv.getTotalNecessaryExp(2, 4)).to.be(2 + 4)
       expect(lv.getMaxExp()).to.be(1 + 2 + 4 + 8 + 16)
     )
+
+    it('gainExp / getExp', ->
+      lv = new RPGLevel
+      lv.defineExpTable((level) -> level)
+      exp = 100
+      lv.gainExp(exp)
+      expect(lv.getExp()).to.be(exp)
+    )
+
+    it('getLevelStatuses', ->
+      lv = new RPGLevel
+      lv.defineExpTable([0, 1, 2, 4, 8, 16, 32])
+      exp = 8
+      lv.gainExp(exp)
+      stats = lv.getLevelStatuses()
+
+      expect(stats).to.be.a('object')
+      expect(stats.level).to.be(4)
+      expect(stats.necessaryExpForNext).to.be(8)
+      expect(stats.gainedExpForNext).to.be(exp - (1 + 2 + 4))
+      expect(stats.lackExpForNext).to.be(8 - stats.gainedExpForNext)
+    )
+)
+
+
+describe('Cache computations ::', ->
 )

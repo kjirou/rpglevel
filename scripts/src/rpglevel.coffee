@@ -24,8 +24,11 @@ do () ->
 
       @_minLevel = 1
 
-      @_cachedExp = @_exp
-      @_cachedLevelInfo = null
+      @_cachedLevelStatuses = null
+
+    _extend: (obj, props) ->
+      obj[k] = v for k, v of props
+      obj
 
     defineExpTable: (args...) ->
       if args[0] instanceof Array
@@ -37,10 +40,10 @@ do () ->
         throw new InvalidArgsError "Invalid Exp-Table."
 
     _generateNecessaryExps: (formula, options={}) ->
-      opts =
+      opts = @_extend(
         startLevel: 1
         maxLevel: 99
-      opts[k] = v for k, v of options
+      , options)
 
       @_necessaryExps = for level in [@_minLevel..opts.maxLevel]
         if level <= opts.startLevel
@@ -54,8 +57,7 @@ do () ->
 
     getMinLevel: -> @_minLevel
 
-    getMaxLevel: ->
-      @_necessaryExps.length
+    getMaxLevel: -> @_necessaryExps.length
 
     getStartLevel: ->
       for i, v of @_necessaryExps
@@ -63,6 +65,9 @@ do () ->
 
     _getIndexByLevel: (level) ->
       level - 1
+
+    _getLevelByIndex: (index) ->
+      parseInt(index, 10) + 1
 
     getExp: -> @_exp
 
@@ -76,6 +81,46 @@ do () ->
     getMaxExp: ->
       @getTotalNecessaryExp(@getMinLevel(), @getMaxLevel())
 
+    gainExp: (exp) ->
+      beforeLevel = @getLevel()
+      @_exp = (@_exp + exp) % @getMaxExp()
+      @_cachedLevelStatuses = null
+      afterLevel = @getLevel()
+      return afterLevel > beforeLevel
+
+    getLevelStatuses: ->
+      if @_cachedLevelStatuses isnt null
+        @_extend(@_cachedLevelStatuses)
+
+      myLevel = 0
+      totalNecessaryExp = null
+      necessaryExpForNext = 0
+      gainedExpForNext = 0
+
+      for idx, exp of @_necessaryExps
+        level = @_getLevelByIndex(idx)
+        totalNecessaryExp += exp
+        if @_exp >= totalNecessaryExp
+          myLevel = level
+        else
+          necessaryExpForNext = exp
+          gainedExpForNext = @_exp - (totalNecessaryExp - exp)
+          break
+
+      # If level is max, then necessaryExpForNext is a null.
+      statuses =
+        level: myLevel
+        necessaryExpForNext: necessaryExpForNext
+        gainedExpForNext: gainedExpForNext
+        lackExpForNext: necessaryExpForNext - gainedExpForNext
+
+      @_cachedLevelStatuses = @_extend({}, statuses)
+
+      statuses
+
+    getLevel: ->
+        @getLevelStatuses().level
+
 
   # Exports
   if typeof module isnt 'undefined'
@@ -84,58 +129,6 @@ do () ->
     window.RPGLevel = RPGLevel
 
 
-#    /** 現LVと経験値についての情報を返す
-#        一緒に色々返すのは処理がわずかに重い＋複雑だから
-#        @return [<現LV>, <次LVへの繰り越し経験値||null>, <次LVに必要な経験値全体||null>]
-#                nullはレベルが上限に達していることを示す */
-#    kls.prototype.getLvInfo = function(){
-#        var self = this;
-#        // 前評価時と同じ場合はキャッシュから返す
-#        if (this._cachedLvInfo !== null && this._exp === this._cachedExp) {
-#            return this._cachedLvInfo.slice();
-#        };
-#        var yourLv = 0;
-#        var totalNecessaryExp = 0;
-#        var nextLvFullExp = null;
-#        var nextLvCurrentExp = null;
-#        $f.each(this._necessaryExps, function(i, necessaryExp){
-#            var nextLv = i + 1;
-#            totalNecessaryExp += necessaryExp;
-#            if (self._exp >= totalNecessaryExp) {
-#                yourLv = nextLv;
-#            } else {
-#                nextLvFullExp = necessaryExp;
-#                nextLvCurrentExp = self._exp - (totalNecessaryExp - necessaryExp);
-#                return false;
-#            };
-#        });
-#        if (yourLv === 0) {// 一応, 通らないはず
-#            throw new Error('RPGMaterial:LvManager.getLvInfo, invalid situation');
-#        };
-#        var lvInfo = [yourLv, nextLvCurrentExp, nextLvFullExp];
-#        // キャッシュ情報更新
-#        if (this._exp !== this._cachedExp) {
-#            this._cachedExp = this._exp;
-#            this._cachedLvInfo = lvInfo.slice();
-#        };
-#        return lvInfo;
-#    };
-#
-#    /** 現LVのみを返す */
-#    kls.prototype.getLv = function(){
-#        return this.getLvInfo()[0];
-#    };
-#
-#    /** 経験値を得る, @return false=LVUPしなかった arr=LVUPした場合にその情報 */
-#    kls.prototype.gainExp = function(exp, withNews){
-#        var withNews = !!withNews;
-#        var before = this.getLvInfo();
-#        this._exp = $f.withinNum(this._exp + exp, null, this.getExpCap());
-#        var after = this.getLvInfo();
-#        if (before[0] < after[0]) { return after };
-#        return false;
-#    };
-#
 #    /** 現LVから上昇するLV分の経験値を得る
 #        余ってた経験値は繰り越される, @return 同gainExp */
 #    kls.prototype.gainExpByLv = function(lvCount){
