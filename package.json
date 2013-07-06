@@ -1,0 +1,30 @@
+{
+  "name": "rpglevel",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kjirou/npm-rpglevel"
+  },
+  "description": "A npm package for creating RPG Level objects.",
+  "version": "0.0.1",
+  "author": "kjirou",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "grunt": "*",
+    "grunt-contrib-clean": "*",
+    "grunt-contrib-coffee": "*",
+    "grunt-contrib-concat": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-notify": "*",
+    "grunt-testem": "*",
+    "grunt-text-replace": "*",
+    "mocha": "*",
+    "expect.js": "*",
+    "sinon": "*",
+    "growl": "*"
+  },
+  "scripts": {
+    "test": "grunt travis"
+  }
+}

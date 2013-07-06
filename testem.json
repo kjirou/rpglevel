@@ -1,0 +1,10 @@
+{
+  "framework": "mocha",
+  "launch_in_ci": [
+    "phantomjs",
+    "chrome",
+    "firefox",
+    "safari"
+  ],
+  "test_page": "test/index.html"
+}

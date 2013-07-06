@@ -1,4 +1,4 @@
-npm-rpglevel
-============
+rpglevel
+========
 
-A library creates RPG Level objects
+A npm package for creating RPG Level objects.
