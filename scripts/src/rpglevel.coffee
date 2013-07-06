@@ -21,6 +21,8 @@ do () ->
       # For that reason, [0] is always to contain 0.
       @_necessaryExps = []
 
+      @_minLevel = 1
+
       @_cachedExp = @_exp
       @_cachedLevelInfo = null
 
@@ -35,20 +37,30 @@ do () ->
 
     _generateNecessaryExps: (formula, options={}) ->
       opts =
-        minLevel: 1
+        startLevel: 1
         maxLevel: 99
       opts[k] = v for k, v of options
 
-      @_necessaryExps = for level in [1..opts.maxLevel]
-        if level <= opts.minLevel
+      @_necessaryExps = for level in [@_minLevel..opts.maxLevel]
+        if level <= opts.startLevel
           0
         else
           formula(level, {
-            minLevel: opts.minLevel
+            minLevel: @_minLevel
+            startLevel: opts.startLevel
             maxLevel: opts.maxLevel
           })
 
     getExp: -> @_exp
+
+    getMinLevel: -> @_minLevel
+
+    getMaxLevel: ->
+      @_necessaryExps.length
+
+    getStartLevel: ->
+      for i, v of @_necessaryExps
+        return parseInt(i, 10) if v > 0
 
 
   # Exports
@@ -98,11 +110,6 @@ do () ->
 #    /** 現LVのみを返す */
 #    kls.prototype.getLv = function(){
 #        return this.getLvInfo()[0];
-#    };
-#
-#    /** 上限LVを返す */
-#    kls.prototype.getLvCap = function(){
-#        return this._necessaryExps.length;
 #    };
 #
 #    /** 上限LVなら真を返す */
