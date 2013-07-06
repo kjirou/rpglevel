@@ -25,3 +25,7 @@ nosetests.xml
 npm-debug.log
 pip-log.txt
 testem.*.*.*.json
+
+
+# Project settings
+test/assets/build/
