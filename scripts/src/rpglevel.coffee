@@ -1,6 +1,7 @@
 do () ->
 
   # @TODO 定型のExpテーブルを用意
+  # @TODO MaxExpを超過した獲得経験値を切り捨てるか保持するかのオプション
 
   class RPGLevel
 
@@ -51,8 +52,6 @@ do () ->
             maxLevel: opts.maxLevel
           })
 
-    getExp: -> @_exp
-
     getMinLevel: -> @_minLevel
 
     getMaxLevel: ->
@@ -61,6 +60,14 @@ do () ->
     getStartLevel: ->
       for i, v of @_necessaryExps
         return parseInt(i, 10) if v > 0
+
+    getExp: -> @_exp
+
+    getMaxExp: ->
+      t = 0
+      for v in @_necessaryExps
+        t += v
+      t
 
 
   # Exports
@@ -110,21 +117,6 @@ do () ->
 #    /** 現LVのみを返す */
 #    kls.prototype.getLv = function(){
 #        return this.getLvInfo()[0];
-#    };
-#
-#    /** 上限LVなら真を返す */
-#    kls.prototype.isLvCap = function(){
-#        return this.getLv() === this.getLvCap();
-#    };
-#
-#    /** 現経験値を返す, 単なるアクセサ */
-#    kls.prototype.getExp = function(){
-#        return this._exp;
-#    };
-#
-#    /** 上限経験値を返す, なお現在は上限までしか経験値を記録しない */
-#    kls.prototype.getExpCap = function(){
-#        return $f.sum(this._necessaryExps);
 #    };
 #
 #    /** あるLvからあるLvまで上がるのに必要な合計経験値を返す */

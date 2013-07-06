@@ -57,12 +57,6 @@ describe('RPGLevel Instance ::', ->
       })
     )
 
-    it('getExp', ->
-      lv = new RPGLevel
-      lv._exp = 10
-      expect(lv.getExp()).to.be(lv._exp)
-    )
-
     it('getMinLevel', ->
       lv = new RPGLevel
       lv.defineExpTable((level) -> level)
@@ -87,5 +81,17 @@ describe('RPGLevel Instance ::', ->
       lv = new RPGLevel
       lv.defineExpTable(((level) -> level), startLevel: 5)
       expect(lv.getStartLevel()).to.be(5)
+    )
+
+    it('getExp', ->
+      lv = new RPGLevel
+      lv._exp = 10
+      expect(lv.getExp()).to.be(lv._exp)
+    )
+
+    it('getMaxExp', ->
+      lv = new RPGLevel
+      lv.defineExpTable([0, 1, 2, 4, 8])
+      expect(lv.getMaxExp()).to.be(1 + 2 + 4 + 8)
     )
 )
