@@ -14,6 +14,28 @@ describe('Class Properties ::', ->
 
 
 describe('Instance Properties ::', ->
+    it('Define Exp-Table directly', ->
+      lv = new RPGLevel
+      lv.defineExpTable([0, 1, 2, 3])
+      expect(lv._necessaryExps[2]).to.be(2)
+    )
+
+    it('Define invalid Exp-Table directly', ->
+      lv = new RPGLevel
+      expect(->
+        lv.defineExpTable([1, 2, 3])
+      ).throwException((e) ->
+        expect(e).to.be.a(RPGLevel.InvalidArgsError)
+      )
+    )
+
+    it('Generate Exp-Table by formula', ->
+      lv = new RPGLevel
+      lv.defineExpTable((level) -> level * 2)
+      expect(lv._necessaryExps[1]).to.be(4)
+      expect(lv._necessaryExps[2]).to.be(6)
+    )
+
     it('getExp', ->
       lv = new RPGLevel
       lv._exp = 10
