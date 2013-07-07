@@ -7,7 +7,7 @@ before_install:
   - npm install -g grunt-cli testem
 
 script:
-  - grunt travis
+  - npm test
 
 branches:
   only:
