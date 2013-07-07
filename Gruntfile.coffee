@@ -38,18 +38,23 @@ module.exports = (grunt) ->
           src: 'test/assets/build/_src.js'
           test: 'test/assets/build/_test.js'
           all: 'test/assets/build/all.js'
+          node_module: 'build/rpglevel.js'
+          node_test: 'build/test.js'
           minified: 'rpglevel.min.js'
           notminified: 'rpglevel.js'
         css:
           all: 'test/assets/build/all.css'
 
-    clean: ['test/assets/build']
+    clean: [
+      'test/assets/build'
+      'build'
+    ]
 
     coffee:
+      options:
+        join: true
+        bare: false
       development:
-        options:
-          join: true
-          bare: false
         files:
           '<%= constants.builded.js.src %>': [
             '<%= constants.coffee.src %>'
@@ -58,12 +63,17 @@ module.exports = (grunt) ->
             '<%= constants.coffee.test %>'
           ]
       production:
-        options:
-          join: true
-          bare: false
         files:
           '<%= constants.builded.js.notminified %>': [
             '<%= constants.coffee.src %>'
+          ]
+      development_node:
+        files:
+          '<%= constants.builded.js.node_module %>': [
+            '<%= constants.coffee.src %>'
+          ]
+          '<%= constants.builded.js.node_test %>': [
+            '<%= constants.coffee.test %>'
           ]
 
     concat:
@@ -90,7 +100,7 @@ module.exports = (grunt) ->
           '<%= constants.builded.js.minified %>': '<%= constants.builded.js.notminified %>'
 
     watch:
-      coffee:
+      main:
         files: [
           '<%= constants.coffee.src %>'
           '<%= constants.coffee.test %>'
@@ -145,10 +155,15 @@ module.exports = (grunt) ->
         ]
 
   grunt.registerTask 'build', [
-    'clean'
+    'clean:0'
     'coffee:development'
     'concat:development_js'
     'concat:development_css'
+  ]
+
+  grunt.registerTask 'build:node', [
+    'clean:1'
+    'coffee:development_node'
   ]
 
   grunt.registerTask 'travis', [
@@ -165,3 +180,5 @@ module.exports = (grunt) ->
   # Aliases
   grunt.registerTask 'default', ['build']
   grunt.registerTask 'test', ['testem:main']
+  grunt.registerTask 'node', ['build:node']
+  grunt.registerTask 'node', ['build:node']

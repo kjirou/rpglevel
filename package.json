@@ -21,7 +21,10 @@
     "grunt-text-replace": "*",
     "mocha": "*",
     "expect.js": "*",
-    "sinon": "*",
-    "growl": "*"
+    "sinon": "*"
+  },
+  "main": "rpglevel.js",
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha ./build/test.js"
   }
 }
