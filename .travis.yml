@@ -8,10 +8,12 @@ before_install:
 
 before_script:
   - testem launchers
+  - grunt node
 
 script:
-  - grunt test
+  - grunt travis
+  - npm test
 
-branches:
-  only:
-    - master
+#branches:
+#  only:
+#    - master
