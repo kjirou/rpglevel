@@ -6,9 +6,11 @@ node_js:
 before_install:
   - npm install -g grunt-cli testem
 
-script:
+before_script:
   - testem launchers
-  - testem ci -l PhantomJS
+
+script:
+  - "testem ci -l PhantomJS"
 
 branches:
   only:
