@@ -98,6 +98,23 @@ describe('RPGLevel Instance ::', ->
       expect(lv.getExp()).to.be(exp)
     )
 
+    it('gainExp returns true at Level-Up', ->
+      lv = new RPGLevel
+      lv.defineExpTable([0, 3, 3])
+      expect(lv.gainExp(1)).to.be(false)
+      expect(lv.gainExp(1)).to.be(false)
+      expect(lv.gainExp(1)).to.be(true)
+      expect(lv.gainExp(1)).to.be(false)
+      expect(lv.gainExp(1)).to.be(false)
+      expect(lv.gainExp(1)).to.be(true)
+
+      # Multi levels up at a one time
+      lv = new RPGLevel
+      lv.defineExpTable([0, 1, 2, 4, 8])
+      expect(lv.gainExp(4)).to.be(true)
+      expect(lv.gainExp(1)).to.be(false)
+    )
+
     it('getLevelStatuses', ->
       lv = new RPGLevel
       lv.defineExpTable([0, 1, 2, 4, 8, 16, 32])

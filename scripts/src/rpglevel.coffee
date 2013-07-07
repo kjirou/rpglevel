@@ -81,12 +81,27 @@ do () ->
     getMaxExp: ->
       @getTotalNecessaryExp(@getMinLevel(), @getMaxLevel())
 
-    gainExp: (exp) ->
+    _updateExp: (exp) ->
       beforeLevel = @getLevel()
-      @_exp = (@_exp + exp) % @getMaxExp()
+
+      @_exp = @_exp + exp
+      if @_exp is @getMaxExp()
+        @_exp = @getMaxExp()
+      else if @_exp < 0
+        @_exp = 0
+
       @_cachedLevelStatuses = null
       afterLevel = @getLevel()
-      return afterLevel > beforeLevel
+
+      return [beforeLevel, afterLevel]
+
+    gainExp: (exp) ->
+      [beforeLevel, afterLevel] = @_updateExp(exp)
+      afterLevel > beforeLevel
+
+    drainExp: (exp) ->
+      [beforeLevel, afterLevel] = @_updateExp(-exp)
+      beforeLevel > afterLevel
 
     getLevelStatuses: ->
       if @_cachedLevelStatuses isnt null
@@ -142,4 +157,4 @@ do () ->
 #    kls.prototype.drainExpByLv = function(lvCount){
 #        var toLv = $f.withinNum(this.getLv() - lvCount, 1);
 #        this._exp = this.calculateTotalNecessaryExp(1, toLv);
-#    };
+#exp - (1 + 2 + 4)    };
