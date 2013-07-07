@@ -3,15 +3,16 @@ language: node_js
 node_js:
   - "0.11"
 
+# It is used my forked Testem repository.
+# Because, probably, Testem will not fix `_.bindAll(this)` bug yet.
 before_install:
-  - npm install -g grunt-cli testem
+  - npm install -g grunt-cli git://github.com/kjirou/testem.git
 
 before_script:
   - testem launchers
 
 script:
-  - testem ci -l PhantomJS -d
-  - cat testem.log
+  - grunt test
 
 branches:
   only:
