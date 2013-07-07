@@ -23,8 +23,5 @@
     "expect.js": "*",
     "sinon": "*",
     "growl": "*"
-  },
-  "scripts": {
-    "test": "grunt travis"
   }
 }
