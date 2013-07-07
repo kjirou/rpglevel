@@ -8,7 +8,7 @@ before_install:
 
 script:
   - testem launchers
-  - grunt travis
+  - testem ci -l phantomjs
 
 branches:
   only:
