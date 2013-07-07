@@ -83,6 +83,13 @@ describe('RPGLevel Instance ::', ->
       expect(lv.getStartLevel()).to.be(5)
     )
 
+    it('getNecessaryExpByLevel', ->
+      lv = new RPGLevel
+      lv.defineExpTable([0, 1, 2, 4, 8, 16])
+      expect(lv.getNecessaryExpByLevel(1)).to.be(0)
+      expect(lv.getNecessaryExpByLevel(4)).to.be(4)
+    )
+
     it('getTotalNecessaryExp / getMaxExp', ->
       lv = new RPGLevel
       lv.defineExpTable([0, 1, 2, 4, 8, 16])
@@ -115,14 +122,16 @@ describe('RPGLevel Instance ::', ->
       expect(lv.gainExp(1)).to.be(0)
     )
 
-    it('Exp is not over max Exp', ->
+    it('Exp is not over max Exp / isMaxLevel', ->
       lv = new RPGLevel
       lv.defineExpTable((level) -> level)
+      expect(lv.isMaxLevel()).to.be(false)
       lv.gainExp(9999999999)
       expect(lv.getExp()).to.be(lv.getMaxExp())
       expect(lv.getLevel()).to.be(lv.getMaxLevel())
+      expect(lv.isMaxLevel()).to.be(true)
 
-      # Threshold processing
+      # Threshold check
       expect(lv.gainExp(1)).to.be(0)
     )
 
@@ -163,7 +172,7 @@ describe('RPGLevel Instance ::', ->
       expect(lv.getLevel()).to.be(4)
     )
 
-    it('Using cache', ->
+    it('Using getStatuses cache', ->
       lv = new RPGLevel
       lv.defineExpTable([0, 1, 2, 4, 8, 16, 32])
       lv.gainExp(15)
@@ -179,5 +188,26 @@ describe('RPGLevel Instance ::', ->
       lv.getStatuses()
       expect(spy.returnValues).to.eql([true, false, true])
       spy.restore()
+    )
+
+    it('gainLevel', ->
+      lv = new RPGLevel
+      lv.defineExpTable([0, 1, 2, 4, 8, 16, 32])
+      lv.gainLevel(1)
+      expect(lv.getExp()).to.be(1)
+      lv.gainLevel(2)
+      expect(lv.getExp()).to.be(1 + 2 + 4)
+    )
+
+    it('drainLevel', ->
+      lv = new RPGLevel
+      lv.defineExpTable([0, 1, 2, 4, 8, 16, 32])
+      lv.gainLevel(4)
+      expect(lv.getExp()).to.be(1 + 2 + 4 + 8)
+      lv.drainLevel(1)
+      expect(lv.getExp()).to.be(1 + 2 + 4 + 8 - 1)
+
+      lv.drainLevel(2)
+      expect(lv.getExp()).to.be(1 + 2 - 1)
     )
 )

@@ -1,11 +1,8 @@
 do () ->
 
-  # @TODO 定型のExpテーブルを用意
-  # @TODO MaxExpを超過した獲得経験値を切り捨てるか保持するかのオプション
-
   class RPGLevel
 
-    @VERSION = '0.0.1'
+    @VERSION = '0.9.0'
 
     @InvalidArgsError = class InvalidArgsError extends Error
       constructor: (@message) ->
@@ -78,6 +75,9 @@ do () ->
         total += @_necessaryExps[idx]
       total
 
+    getNecessaryExpByLevel: (level) ->
+      @_necessaryExps[@_getIndexByLevel(level)]
+
     getMaxExp: ->
       @getTotalNecessaryExp(@getMinLevel(), @getMaxLevel())
 
@@ -103,6 +103,31 @@ do () ->
       [beforeLevel, afterLevel] = @_updateExp(-exp)
       afterLevel - beforeLevel
 
+    gainLevel: (levelUpCount) ->
+      from = @getLevel()
+      to = from + levelUpCount
+      to = @getMaxLevel() if to > @getMaxLevel()
+      # It is always adjusting like the following:
+      #
+      #   Lv=1, gainedExpForNext=3 (Remainded 3)
+      #     (+1 Level Up)
+      #   Lv=2, gainedExpForNext=0 (Always to be 0)
+      #
+      delta = @getTotalNecessaryExp(@getMinLevel(), to) - @getExp()
+      @gainExp(delta)
+
+    drainLevel: (levelDownCount) ->
+      to = @getLevel() - levelDownCount
+      to = 0 if to < 0
+      # It is always adjusting like the following:
+      #
+      #   Lv=2
+      #     (-1 Level down)
+      #   Lv=1, necessaryExpForNext=10, gainedExpForNext=9 (Always "necessary - 1")
+      #
+      delta = @getExp() - @getTotalNecessaryExp(@getMinLevel(), to + 1)
+      @drainExp(delta + 1)
+
     # For mock replacement
     _hasCachedLevelStatuses: ->
         @_cachedLevelStatuses isnt null
@@ -112,7 +137,7 @@ do () ->
         return @_extend({}, @_cachedLevelStatuses)
 
       myLevel = 0
-      totalNecessaryExp = null
+      totalNecessaryExp = 0
       necessaryExpForNext = 0
       gainedExpForNext = 0
 
@@ -126,7 +151,6 @@ do () ->
           gainedExpForNext = @_exp - (totalNecessaryExp - exp)
           break
 
-      # If level is max, then necessaryExpForNext is a null.
       statuses =
         level: myLevel
         necessaryExpForNext: necessaryExpForNext
@@ -140,25 +164,12 @@ do () ->
     getLevel: ->
         @getStatuses().level
 
+    isMaxLevel: ->
+        @getLevel() is @getMaxLevel()
+
 
   # Exports
   if typeof module isnt 'undefined'
     module.exports = RPGLevel
   else
     window.RPGLevel = RPGLevel
-
-
-#    /** 現LVから上昇するLV分の経験値を得る
-#        余ってた経験値は繰り越される, @return 同gainExp */
-#    kls.prototype.gainExpByLv = function(lvCount){
-#        var fromLv = this.getLv();
-#        var toLv = fromLv + lvCount;
-#        toLv = $f.withinNum(toLv, null, this.getLvCap());
-#        return this.gainExp(this.calculateTotalNecessaryExp(fromLv, toLv));
-#    };
-#
-#    /** LV計算で経験値を下げる, 端数は切り捨てられてそのLV内での最低値になる */
-#    kls.prototype.drainExpByLv = function(lvCount){
-#        var toLv = $f.withinNum(this.getLv() - lvCount, 1);
-#        this._exp = this.calculateTotalNecessaryExp(1, toLv);
-#exp - (1 + 2 + 4)    };
