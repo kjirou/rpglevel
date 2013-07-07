@@ -97,15 +97,19 @@ do () ->
 
     gainExp: (exp) ->
       [beforeLevel, afterLevel] = @_updateExp(exp)
-      afterLevel > beforeLevel
+      afterLevel - beforeLevel
 
     drainExp: (exp) ->
       [beforeLevel, afterLevel] = @_updateExp(-exp)
-      beforeLevel > afterLevel
+      afterLevel - beforeLevel
+
+    # For mock replacement
+    _hasCachedLevelStatuses: ->
+        @_cachedLevelStatuses isnt null
 
     getLevelStatuses: ->
-      if @_cachedLevelStatuses isnt null
-        @_extend(@_cachedLevelStatuses)
+      if @_hasCachedLevelStatuses()
+        return @_extend({}, @_cachedLevelStatuses)
 
       myLevel = 0
       totalNecessaryExp = null

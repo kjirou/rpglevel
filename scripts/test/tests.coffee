@@ -98,21 +98,21 @@ describe('RPGLevel Instance ::', ->
       expect(lv.getExp()).to.be(exp)
     )
 
-    it('gainExp returns true at level up', ->
+    it('gainExp returns delta levels', ->
       lv = new RPGLevel
       lv.defineExpTable([0, 3, 3])
-      expect(lv.gainExp(1)).to.be(false)
-      expect(lv.gainExp(1)).to.be(false)
-      expect(lv.gainExp(1)).to.be(true)
-      expect(lv.gainExp(1)).to.be(false)
-      expect(lv.gainExp(1)).to.be(false)
-      expect(lv.gainExp(1)).to.be(true)
+      expect(lv.gainExp(1)).to.be(0)
+      expect(lv.gainExp(1)).to.be(0)
+      expect(lv.gainExp(1)).to.be(1)
+      expect(lv.gainExp(1)).to.be(0)
+      expect(lv.gainExp(1)).to.be(0)
+      expect(lv.gainExp(1)).to.be(1)
 
       # Multi levels up at a one time
       lv = new RPGLevel
       lv.defineExpTable([0, 1, 2, 4, 8])
-      expect(lv.gainExp(4)).to.be(true)
-      expect(lv.gainExp(1)).to.be(false)
+      expect(lv.gainExp(4)).to.be(2)
+      expect(lv.gainExp(1)).to.be(0)
     )
 
     it('Exp is not over max Exp', ->
@@ -123,19 +123,20 @@ describe('RPGLevel Instance ::', ->
       expect(lv.getLevel()).to.be(lv.getMaxLevel())
 
       # Threshold processing
-      expect(lv.gainExp(1)).to.be(false)
+      expect(lv.gainExp(1)).to.be(0)
     )
 
     it('drainExp', ->
       lv = new RPGLevel
       lv.defineExpTable([0, 5, 10, 15, 20])
-      lv.gainExp(20)
+      lv.gainExp(35)
 
-      expect(lv.getLevel()).to.be(3)
-      expect(lv.drainExp(3)).to.be(false)
-      expect(lv.drainExp(2)).to.be(false)
-      expect(lv.drainExp(1)).to.be(true)
-      expect(lv.getLevel()).to.be(2)
+      expect(lv.getLevel()).to.be(4)
+      expect(lv.drainExp(5)).to.be(0)
+      expect(lv.drainExp(1)).to.be(-1)
+      expect(lv.drainExp(1)).to.be(0)
+      expect(lv.drainExp(24)).to.be(-2)
+      expect(lv.getLevel()).to.be(1)
     )
 
     it('Exp is not under 0', ->
@@ -161,8 +162,22 @@ describe('RPGLevel Instance ::', ->
 
       expect(lv.getLevel()).to.be(4)
     )
-)
 
+    it('Using cache', ->
+      lv = new RPGLevel
+      lv.defineExpTable([0, 1, 2, 4, 8, 16, 32])
+      lv.gainExp(15)
 
-describe('Cache computations ::', ->
+      spy = sinon.spy(lv, '_hasCachedLevelStatuses')
+      lv.getLevelStatuses()
+      lv.getLevelStatuses()
+      expect(spy.returnValues).to.eql([true, true])
+      spy.restore()
+
+      spy = sinon.spy(lv, '_hasCachedLevelStatuses')
+      lv.gainExp(1)
+      lv.getLevelStatuses()
+      expect(spy.returnValues).to.eql([true, false, true])
+      spy.restore()
+    )
 )
