@@ -147,12 +147,12 @@ describe('RPGLevel Instance ::', ->
       expect(lv.getLevel()).to.be(lv.getMinLevel())
     )
 
-    it('getLevelStatuses / getLevel', ->
+    it('getStatuses / getLevel', ->
       lv = new RPGLevel
       lv.defineExpTable([0, 1, 2, 4, 8, 16, 32])
       exp = 8
       lv.gainExp(exp)
-      stats = lv.getLevelStatuses()
+      stats = lv.getStatuses()
 
       expect(stats).to.be.a('object')
       expect(stats.level).to.be(4)
@@ -169,14 +169,14 @@ describe('RPGLevel Instance ::', ->
       lv.gainExp(15)
 
       spy = sinon.spy(lv, '_hasCachedLevelStatuses')
-      lv.getLevelStatuses()
-      lv.getLevelStatuses()
+      lv.getStatuses()
+      lv.getStatuses()
       expect(spy.returnValues).to.eql([true, true])
       spy.restore()
 
       spy = sinon.spy(lv, '_hasCachedLevelStatuses')
       lv.gainExp(1)
-      lv.getLevelStatuses()
+      lv.getStatuses()
       expect(spy.returnValues).to.eql([true, false, true])
       spy.restore()
     )

@@ -107,7 +107,7 @@ do () ->
     _hasCachedLevelStatuses: ->
         @_cachedLevelStatuses isnt null
 
-    getLevelStatuses: ->
+    getStatuses: ->
       if @_hasCachedLevelStatuses()
         return @_extend({}, @_cachedLevelStatuses)
 
@@ -138,7 +138,7 @@ do () ->
       statuses
 
     getLevel: ->
-        @getLevelStatuses().level
+        @getStatuses().level
 
 
   # Exports
