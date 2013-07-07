@@ -98,7 +98,7 @@ describe('RPGLevel Instance ::', ->
       expect(lv.getExp()).to.be(exp)
     )
 
-    it('gainExp returns true at Level-Up', ->
+    it('gainExp returns true at level up', ->
       lv = new RPGLevel
       lv.defineExpTable([0, 3, 3])
       expect(lv.gainExp(1)).to.be(false)
@@ -115,7 +115,38 @@ describe('RPGLevel Instance ::', ->
       expect(lv.gainExp(1)).to.be(false)
     )
 
-    it('getLevelStatuses', ->
+    it('Exp is not over max Exp', ->
+      lv = new RPGLevel
+      lv.defineExpTable((level) -> level)
+      lv.gainExp(9999999999)
+      expect(lv.getExp()).to.be(lv.getMaxExp())
+      expect(lv.getLevel()).to.be(lv.getMaxLevel())
+
+      # Threshold processing
+      expect(lv.gainExp(1)).to.be(false)
+    )
+
+    it('drainExp', ->
+      lv = new RPGLevel
+      lv.defineExpTable([0, 5, 10, 15, 20])
+      lv.gainExp(20)
+
+      expect(lv.getLevel()).to.be(3)
+      expect(lv.drainExp(3)).to.be(false)
+      expect(lv.drainExp(2)).to.be(false)
+      expect(lv.drainExp(1)).to.be(true)
+      expect(lv.getLevel()).to.be(2)
+    )
+
+    it('Exp is not under 0', ->
+      lv = new RPGLevel
+      lv.defineExpTable([0, 1])
+      lv.drainExp(9999999999)
+      expect(lv.getExp()).to.be(0)
+      expect(lv.getLevel()).to.be(lv.getMinLevel())
+    )
+
+    it('getLevelStatuses / getLevel', ->
       lv = new RPGLevel
       lv.defineExpTable([0, 1, 2, 4, 8, 16, 32])
       exp = 8
@@ -127,6 +158,8 @@ describe('RPGLevel Instance ::', ->
       expect(stats.necessaryExpForNext).to.be(8)
       expect(stats.gainedExpForNext).to.be(exp - (1 + 2 + 4))
       expect(stats.lackExpForNext).to.be(8 - stats.gainedExpForNext)
+
+      expect(lv.getLevel()).to.be(4)
     )
 )
 

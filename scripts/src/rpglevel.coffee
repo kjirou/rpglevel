@@ -85,7 +85,7 @@ do () ->
       beforeLevel = @getLevel()
 
       @_exp = @_exp + exp
-      if @_exp is @getMaxExp()
+      if @_exp > @getMaxExp()
         @_exp = @getMaxExp()
       else if @_exp < 0
         @_exp = 0
