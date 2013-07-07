@@ -10,7 +10,8 @@ before_script:
   - testem launchers
 
 script:
-  - testem ci -l Firefox
+  - testem ci -l PhantomJS -d
+  - cat testem.log
 
 branches:
   only:
