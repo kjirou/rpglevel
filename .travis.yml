@@ -8,7 +8,7 @@ before_install:
 
 script:
   - testem launchers
-  - testem ci -l phantomjs
+  - testem ci -l PhantomJS
 
 branches:
   only:
