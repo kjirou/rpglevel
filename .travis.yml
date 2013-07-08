@@ -14,6 +14,6 @@ script:
   - grunt travis
   - npm test
 
-#branches:
-#  only:
-#    - master
+branches:
+  except:
+    - gh-pages
