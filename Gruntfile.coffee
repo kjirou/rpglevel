@@ -151,7 +151,7 @@ module.exports = (grunt) ->
         overwrite: true
         replacements: [
           from: /(['"])0\.0\.X(['"])/
-          to: '$10.0.2$2'
+          to: '$10.0.X$2'
         ]
 
   grunt.registerTask 'build', [
@@ -180,5 +180,6 @@ module.exports = (grunt) ->
   # Aliases
   grunt.registerTask 'default', ['build']
   grunt.registerTask 'test', ['testem:main']
+  grunt.registerTask 'testall', ['testem:all_launchers']
   grunt.registerTask 'node', ['build:node']
   grunt.registerTask 'node', ['build:node']
