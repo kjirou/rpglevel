@@ -4,6 +4,49 @@ rpglevel [![Build Status](https://travis-ci.org/kjirou/npm-rpglevel.png)](https:
 A npm package for creating RPG Level objects.
 
 
+## Supported browsers/node.js
+
+- `IE10`, `IE9`, `IE8`, `IE7`
+- `Chrome`
+- `Firefox`
+- `Safari`
+- `Mobile Safari`
+- `PhantomJS`
+- `node.js` >= `11.0`
+
+
+## Usage
+```
+var lv = new RPGLevel();
+
+//
+// Define Exp-Table by formula.
+//
+//   Lv1  = 0
+//   Lv2  = 4 .. = `return level * 2`
+//   Lv3  = 6 .. Total necessary exps are 4 + 6 = 10
+//   ..
+//   Lv10 = 10
+//
+lv.defineExpTable(function(level){
+  return level * 2;
+}, {
+  maxLevel: 10
+});
+
+lv.gainExp(10);
+
+// Getable your level.
+console.log(lv.getLevel());  // -> 3
+
+// Getable more infos.
+console.log(lv.getStatuses());
+```
+
+
+## API Reference
+
+
 ## Development
 
 ### Dependencies
@@ -33,8 +76,9 @@ $ grunt
 ### Testing
 
 - Open [test/index.html](test/index.html)
-- Execute `testem`, and open [http://localhost:7357/](http://localhost:7357/)
+- Execute `testem` or `testem server`, after that, open [http://localhost:7357/](http://localhost:7357/)
 - `grunt test` is CI test by PhantomJS only.
+- `grunt testall` is CI test by PhantomJS, Chrome, Firefox and Safari.
 
 ### For node.js
 
