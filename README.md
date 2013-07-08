@@ -1,4 +1,4 @@
-rpglevel
+rpglevel [![Build Status](https://travis-ci.org/kjirou/npm-rpglevel.png)](https://travis-ci.org/kjirou/npm-rpglevel)
 ========
 
 A npm package for creating RPG Level objects.
