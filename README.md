@@ -39,6 +39,6 @@ $ grunt
 ### For node.js
 
 ```
-$ grunt node
-$ npm test
+$ grunt node  # Build
+$ npm test    # Test
 ```
