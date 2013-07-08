@@ -8,7 +8,7 @@ A npm package for creating RPG Level objects.
 
 ### Dependencies
 
-- `node.js` >= 11.0, e.g. `brew install node`
+- `node.js` >= `11.0`, e.g. `brew install node`
 - `PhantomJS`, e.g. `brew install phantomjs`
 
 ```
@@ -18,8 +18,8 @@ $ npm install -g grunt-cli testem
 ### Deploy
 
 ```
-$ git clone git@github.com:kjirou/jquery.imageIndexer.git
-$ cd jquery.imageIndexer
+$ git clone git@github.com:kjirou/npm-rpglevel.git
+$ cd npm-rpglevel
 $ npm install
 $ grunt
 ```
