@@ -8,10 +8,12 @@ A npm package for creating RPG Level objects.
 
 ### Dependencies
 
-- `node.js` >= 11.0
-- `npm install -g grunt-cli`
-- `npm install -g testem`
-- `brew install phantomjs`
+- `node.js` >= 11.0, e.g. `brew install node`
+- `PhantomJS`, e.g. `brew install phantomjs`
+
+```
+$ npm install -g grunt-cli testem
+```
 
 ### Deploy
 
