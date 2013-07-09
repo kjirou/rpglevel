@@ -170,6 +170,4 @@ module.exports = (grunt) ->
     'uglify:production'
   ]
 
-  grunt.registerTask 'node', ['build:node']
-
   grunt.registerTask 'default', ['build']
