@@ -34,7 +34,7 @@ lv.defineExpTable(function(level){
   maxLevel: 5
 });
 
-// You got exps with levels up.
+// You got exps with 2 levels up.
 lv.gainExp(10);
 
 // Getable your level.
