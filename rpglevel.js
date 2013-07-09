@@ -1,5 +1,6 @@
 (function() {
-  var __hasProp = {}.hasOwnProperty,
+  var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
+    __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     __slice = [].slice;
 
@@ -8,7 +9,23 @@
     RPGLevel = (function() {
       var InvalidArgsError;
 
-      RPGLevel.VERSION = '0.9.0';
+      RPGLevel.VERSION = '1.0.0';
+
+      RPGLevel.PRESET_EXP_TABLE_DEFINITIONS = {
+        wiz_like: [
+          function(level, data) {
+            var total;
+            if (level === 2) {
+              return 1000;
+            } else if (__indexOf.call([3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], level) >= 0) {
+              total = data.previousTotalExp * 1.72414;
+              return parseInt(total - data.previousTotalExp, 10);
+            } else {
+              return data.exps[13];
+            }
+          }
+        ]
+      };
 
       RPGLevel.InvalidArgsError = InvalidArgsError = (function(_super) {
         __extends(InvalidArgsError, _super);
@@ -40,10 +57,13 @@
       };
 
       RPGLevel.prototype.defineExpTable = function() {
-        var args;
+        var args, def;
         args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
         if (args[0] instanceof Array) {
           this._necessaryExps = args[0];
+        } else if (typeof args[0] === 'string') {
+          def = this._getExpTableDefinition(args[0]);
+          this._necessaryExps = this._generateNecessaryExps.apply(this, def);
         } else {
           this._necessaryExps = this._generateNecessaryExps(args[0], args[1]);
         }
@@ -53,7 +73,7 @@
       };
 
       RPGLevel.prototype._generateNecessaryExps = function(formula, options) {
-        var level, opts;
+        var exp, exps, level, memo, opts, previousExp, previousTotalExp;
         if (options == null) {
           options = {};
         }
@@ -61,22 +81,43 @@
           startLevel: 1,
           maxLevel: 99
         }, options);
+        exps = [];
+        previousExp = 0;
+        previousTotalExp = 0;
+        memo = {};
         return this._necessaryExps = (function() {
           var _i, _ref, _ref1, _results;
           _results = [];
           for (level = _i = _ref = this._minLevel, _ref1 = opts.maxLevel; _ref <= _ref1 ? _i <= _ref1 : _i >= _ref1; level = _ref <= _ref1 ? ++_i : --_i) {
             if (level <= opts.startLevel) {
-              _results.push(0);
+              exp = 0;
             } else {
-              _results.push(formula(level, {
+              exp = formula(level, {
+                self: this,
                 minLevel: this._minLevel,
                 startLevel: opts.startLevel,
-                maxLevel: opts.maxLevel
-              }));
+                maxLevel: opts.maxLevel,
+                levelDelta: opts.maxLevel - opts.startLevel,
+                exps: exps,
+                previousExp: previousExp,
+                previousTotalExp: previousTotalExp,
+                memo: memo
+              });
+              previousExp = exp;
+              previousTotalExp += exp;
             }
+            exps.push(exp);
+            _results.push(exp);
           }
           return _results;
         }).call(this);
+      };
+
+      RPGLevel.prototype._getExpTableDefinition = function(key) {
+        if (key in RPGLevel.PRESET_EXP_TABLE_DEFINITIONS) {
+          return RPGLevel.PRESET_EXP_TABLE_DEFINITIONS[key];
+        }
+        throw new InvalidArgsError("Not found Exp-Table, key=" + key);
       };
 
       RPGLevel.prototype.getMinLevel = function() {
@@ -128,16 +169,25 @@
         return this.getTotalNecessaryExp(this.getMinLevel(), this.getMaxLevel());
       };
 
+      RPGLevel.prototype.setExp = function(exp) {
+        this._exp = parseInt(exp, 10);
+        return this._cleanCaches();
+      };
+
+      RPGLevel.prototype.resetExp = function() {
+        return this.setExp(0);
+      };
+
       RPGLevel.prototype._updateExp = function(exp) {
-        var afterLevel, beforeLevel;
+        var afterLevel, beforeLevel, nextExp;
         beforeLevel = this.getLevel();
-        this._exp = this._exp + exp;
-        if (this._exp > this.getMaxExp()) {
-          this._exp = this.getMaxExp();
-        } else if (this._exp < 0) {
-          this._exp = 0;
+        nextExp = this._exp + exp;
+        if (nextExp > this.getMaxExp()) {
+          nextExp = this.getMaxExp();
+        } else if (nextExp < 0) {
+          nextExp = 0;
         }
-        this._cachedLevelStatuses = null;
+        this.setExp(nextExp);
         afterLevel = this.getLevel();
         return [beforeLevel, afterLevel];
       };
@@ -177,6 +227,10 @@
 
       RPGLevel.prototype._hasCachedLevelStatuses = function() {
         return this._cachedLevelStatuses !== null;
+      };
+
+      RPGLevel.prototype._cleanCaches = function() {
+        return this._cachedLevelStatuses = null;
       };
 
       RPGLevel.prototype.getStatuses = function() {

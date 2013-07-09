@@ -5,7 +5,7 @@
     "url": "https://github.com/kjirou/npm-rpglevel"
   },
   "description": "A npm package for creating RPG Level objects.",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "author": "kjirou",
   "dependencies": {
   },
