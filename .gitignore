@@ -30,3 +30,4 @@ testem.*.*.*.json
 # Project settings
 build/
 test/assets/build/
+!test/assets/node_modules/

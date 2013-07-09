@@ -10,9 +10,16 @@
 <body>
   <div id="mocha"></div>
   <script>
-    document.write('<scr' + 'ipt src="assets/build/all.js?_cache=' +
+    document.write('<scr' + 'ipt src="assets/build/src.js?_cache=' +
         (new Date()).getTime() + '"></scr' + 'ipt>');
   </script>
+  <script src="assets/node_modules/mocha/mocha.js"></script>
+  <script src="assets/node_modules/expect.js/expect.js"></script>
+  <script src="assets/node_modules/sinon/pkg/sinon.js"></script>
   <script src="/testem.js"></script>
+  <script>
+    document.write('<scr' + 'ipt src="assets/build/test.js?_cache=' +
+        (new Date()).getTime() + '"></scr' + 'ipt>');
+  </script>
 </body>
 </html>

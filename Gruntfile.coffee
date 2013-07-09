@@ -23,21 +23,14 @@ module.exports = (grunt) ->
           'scripts/test/tests.coffee'
           'scripts/test/run.coffee'
         ]
-      js:
-        test: [
-          'node_modules/mocha/mocha.js'
-          'node_modules/expect.js/expect.js'
-          'node_modules/sinon/pkg/sinon.js'
-        ]
       css:
         test: [
           'node_modules/mocha/mocha.css'
         ]
       builded:
         js:
-          src: 'test/assets/build/_src.js'
-          test: 'test/assets/build/_test.js'
-          all: 'test/assets/build/all.js'
+          src: 'test/assets/build/src.js'
+          test: 'test/assets/build/test.js'
           node_module: 'build/rpglevel.js'
           node_test: 'build/test.js'
           minified: 'rpglevel.min.js'
@@ -77,15 +70,6 @@ module.exports = (grunt) ->
           ]
 
     concat:
-      development_js:
-        options:
-          separator: ';\n'
-        src: [
-          '<%= constants.builded.js.src %>'
-          '<%= constants.js.test %>'
-          '<%= constants.builded.js.test %>'
-        ]
-        dest: '<%= constants.builded.js.all %>'
       development_css:
         options:
           separator: '\n'
@@ -117,8 +101,6 @@ module.exports = (grunt) ->
           'test/index.html'
         ]
         dest: 'log/tests.tap'
-      # Waring: Chrome can't finish tests occasionally.
-      # Ref) https://github.com/airportyh/testem/issues/240
       all_launchers:
         options: {
           launch_in_ci: [
@@ -154,16 +136,27 @@ module.exports = (grunt) ->
           to: '$10.0.X$2'
         ]
 
+
+  # Commands
   grunt.registerTask 'build', [
     'clean:0'
     'coffee:development'
-    'concat:development_js'
     'concat:development_css'
   ]
 
   grunt.registerTask 'build:node', [
     'clean:1'
     'coffee:development_node'
+  ]
+
+  grunt.registerTask 'test', [
+    'build'
+    'testem:main'
+  ]
+
+  grunt.registerTask 'testall', [
+    'build'
+    'testem:all_launchers'
   ]
 
   grunt.registerTask 'travis', [
@@ -177,9 +170,6 @@ module.exports = (grunt) ->
     'uglify:production'
   ]
 
-  # Aliases
+  grunt.registerTask 'node', ['build:node']
+
   grunt.registerTask 'default', ['build']
-  grunt.registerTask 'test', ['testem:main']
-  grunt.registerTask 'testall', ['testem:all_launchers']
-  grunt.registerTask 'node', ['build:node']
-  grunt.registerTask 'node', ['build:node']
