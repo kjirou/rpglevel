@@ -4,6 +4,18 @@ rpglevel [![Build Status](https://travis-ci.org/kjirou/npm-rpglevel.png)](https:
 A npm package for creating RPG Level objects.
 
 
+## Download
+
+- [Stable production version](https://raw.github.com/kjirou/npm-rpglevel/master/rpglevel.min.js)
+- [Stable development version](https://raw.github.com/kjirou/npm-rpglevel/master/rpglevel.js)
+- [Old releases](https://github.com/kjirou/npm-rpglevel/releases)
+
+Or, if you can use `node.js`:
+```
+$ npm install rpglevel
+```
+
+
 ## Supported browsers/node.js
 
 - `IE10`, `IE9`, `IE8`, `IE7`
@@ -23,7 +35,7 @@ var lv = new RPGLevel();
 // Define Exp-Table by formula.
 //
 //   Lv1 = 0
-//   Lv2 = 4 
+//   Lv2 = 4
 //   Lv3 = 6  (Total = 10)
 //   Lv4 = 8  (Total = 18)
 //   Lv5 = 10 (Total = 28)
@@ -46,6 +58,35 @@ console.log(lv.getStatuses());  // -> { level:3, .. }
 
 
 ## API Reference
+
+### RPGLevel Class
+
+- `new RPGLevel()`
+- `VERSION = "X.X.X"`
+
+### RPGLevel Instance
+
+- `defineExpTable(necessaryExps)`
+- `defineExpTable(formula, options={})`
+- `defineExpTable(definitionKey)`
+- `getMinLevel()`
+- `getMaxLevel()`
+- `getStartLevel()`
+- `getExp()`
+- `getTotalNecessaryExp(fromLevel, toLevel)`
+- `getNecessaryExpByLevel(level)`
+- `getMaxExp()`
+- `setExp(exp)`
+- `resetExp()`
+- `gainExp(exp)`
+- `drainExp(exp)`
+- `gainLevel(levelUpCount)`
+- `drainLevel(levelDownCount)`
+- `getStatuses()`
+- `getLevel()`
+- `isMaxLevel()`
+
+Sorry, these are not enough. Please look a [source code](https://github.com/kjirou/npm-rpglevel/blob/master/scripts/src/rpglevel.coffee).
 
 
 ## Development
