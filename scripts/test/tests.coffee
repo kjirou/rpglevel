@@ -99,12 +99,44 @@ describe('RPGLevel Instance ::', ->
       expect(lv.getMaxExp()).to.be(1 + 2 + 4 + 8 + 16)
     )
 
+    it('setExp', ->
+      lv = new RPGLevel
+      lv.defineExpTable([0, 1, 2, 4, 8, 16])
+      lv.setExp(10)
+      expect(lv.getExp()).to.be(10)
+
+      # Cleaning caches
+      lv.gainExp(1)
+      expect(lv._hasCachedLevelStatuses()).to.ok()
+      lv.setExp(10)
+      expect(lv._hasCachedLevelStatuses()).to.not.ok()
+    )
+
+    it('resetExp', ->
+      lv = new RPGLevel
+      lv.defineExpTable([0, 1, 2, 4, 8, 16])
+      lv.gainExp(10)
+      lv.resetExp()
+      expect(lv.getExp()).to.be(0)
+
+      # Equals to new born instance
+      lv2 = new RPGLevel
+      lv.defineExpTable([0, 1, 2, 4, 8, 16])
+      expect(lv.getExp()).to.be(lv2.getExp())
+    )
+
     it('gainExp / getExp', ->
       lv = new RPGLevel
       lv.defineExpTable((level) -> level)
-      exp = 100
-      lv.gainExp(exp)
-      expect(lv.getExp()).to.be(exp)
+      lv.gainExp(100)
+      expect(lv.getExp()).to.be(100)
+    )
+
+    it('Gained float Exp is floored', ->
+      lv = new RPGLevel
+      lv.defineExpTable([0, 1, 2, 4])
+      lv.gainExp(1.6)
+      expect(lv.getExp()).to.be(1)
     )
 
     it('gainExp returns delta levels', ->
@@ -156,32 +188,6 @@ describe('RPGLevel Instance ::', ->
       lv.drainExp(9999999999)
       expect(lv.getExp()).to.be(0)
       expect(lv.getLevel()).to.be(lv.getMinLevel())
-    )
-
-    it('setExp', ->
-      lv = new RPGLevel
-      lv.defineExpTable([0, 1, 2, 4, 8, 16])
-      lv.setExp(10)
-      expect(lv.getExp()).to.be(10)
-
-      # Cleaning caches
-      lv.gainExp(1)
-      expect(lv._hasCachedLevelStatuses()).to.ok()
-      lv.setExp(10)
-      expect(lv._hasCachedLevelStatuses()).to.not.ok()
-    )
-
-    it('resetExp', ->
-      lv = new RPGLevel
-      lv.defineExpTable([0, 1, 2, 4, 8, 16])
-      lv.gainExp(10)
-      lv.resetExp()
-      expect(lv.getExp()).to.be(0)
-
-      # Equals to new born instance
-      lv2 = new RPGLevel
-      lv.defineExpTable([0, 1, 2, 4, 8, 16])
-      expect(lv.getExp()).to.be(lv2.getExp())
     )
 
     it('getStatuses / getLevel', ->

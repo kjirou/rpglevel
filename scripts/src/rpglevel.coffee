@@ -81,16 +81,22 @@ do () ->
     getMaxExp: ->
       @getTotalNecessaryExp(@getMinLevel(), @getMaxLevel())
 
+    setExp: (exp) ->
+      @_exp = parseInt(exp, 10)
+      @_cleanCaches()
+
+    resetExp: () -> @setExp(0)
+
     _updateExp: (exp) ->
       beforeLevel = @getLevel()
 
-      @_exp = @_exp + exp
-      if @_exp > @getMaxExp()
-        @_exp = @getMaxExp()
-      else if @_exp < 0
-        @_exp = 0
+      nextExp = @_exp + exp
+      if nextExp > @getMaxExp()
+        nextExp = @getMaxExp()
+      else if nextExp < 0
+        nextExp = 0
+      @setExp(nextExp)
 
-      @_cleanCaches()
       afterLevel = @getLevel()
 
       return [beforeLevel, afterLevel]
@@ -102,12 +108,6 @@ do () ->
     drainExp: (exp) ->
       [beforeLevel, afterLevel] = @_updateExp(-exp)
       afterLevel - beforeLevel
-
-    setExp: (exp) ->
-      @_exp = exp
-      @_cleanCaches()
-
-    resetExp: () -> @setExp(0)
 
     gainLevel: (levelUpCount) ->
       from = @getLevel()
