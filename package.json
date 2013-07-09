@@ -25,6 +25,6 @@
   },
   "main": "rpglevel.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha ./build/test.js"
+    "test": "grunt build:node; ./node_modules/mocha/bin/mocha ./build/test.js"
   }
 }

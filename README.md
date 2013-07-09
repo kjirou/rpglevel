@@ -79,10 +79,4 @@ $ grunt
 - Execute `testem` or `testem server`, after that, open [http://localhost:7357/](http://localhost:7357/)
 - `grunt test` is CI test by PhantomJS only.
 - `grunt testall` is CI test by PhantomJS, Chrome, Firefox and Safari.
-
-### For node.js
-
-```
-$ grunt node  # Build
-$ npm test    # Test
-```
+- `npm test` is for node.js.
