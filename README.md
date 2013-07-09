@@ -22,25 +22,26 @@ var lv = new RPGLevel();
 //
 // Define Exp-Table by formula.
 //
-//   Lv1  = 0
-//   Lv2  = 4 .. = `return level * 2`
-//   Lv3  = 6 .. Total necessary exps are 4 + 6 = 10
-//   ..
-//   Lv10 = 10
+//   Lv1 = 0
+//   Lv2 = 4 
+//   Lv3 = 6  (Total = 10)
+//   Lv4 = 8  (Total = 18)
+//   Lv5 = 10 (Total = 28)
 //
 lv.defineExpTable(function(level){
   return level * 2;
 }, {
-  maxLevel: 10
+  maxLevel: 5
 });
 
+// You got exps with levels up.
 lv.gainExp(10);
 
 // Getable your level.
 console.log(lv.getLevel());  // -> 3
 
 // Getable more infos.
-console.log(lv.getStatuses());
+console.log(lv.getStatuses());  // -> { level:3, .. }
 ```
 
 
@@ -79,4 +80,4 @@ $ grunt
 - Execute `testem` or `testem server`, after that, open [http://localhost:7357/](http://localhost:7357/)
 - `grunt test` is CI test by PhantomJS only.
 - `grunt testall` is CI test by PhantomJS, Chrome, Firefox and Safari.
-- `npm test` is for node.js.
+- `npm test` tests by node.js.
