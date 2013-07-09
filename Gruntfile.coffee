@@ -94,7 +94,7 @@ module.exports = (grunt) ->
     testem:
       options:
         launch_in_ci: [
-          'phantomjs'
+          'PhantomJS'
         ]
       main:
         src: [
@@ -104,10 +104,10 @@ module.exports = (grunt) ->
       all_launchers:
         options: {
           launch_in_ci: [
-            'phantomjs'
-            'firefox'
-            'safari'
-            'chrome'
+            'PhantomJS'
+            'Chrome'
+            'Firefox'
+            'Safari'
           ]
         }
         src: [
@@ -117,7 +117,9 @@ module.exports = (grunt) ->
       travis:
         options: {
           launch_in_ci: [
-            'phantomjs'
+            'PhantomJS'
+            'Chromium'
+            'Firefox'
           ]
         }
         src: [
