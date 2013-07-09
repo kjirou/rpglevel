@@ -1,7 +1,7 @@
 rpglevel [![Build Status](https://travis-ci.org/kjirou/npm-rpglevel.png)](https://travis-ci.org/kjirou/npm-rpglevel)
 ========
 
-A npm package for creating RPG Level objects.
+A npm package for managing "Level" with "Exp" that is used by like RPG.
 
 
 ## Download
@@ -25,6 +25,11 @@ $ npm install rpglevel
 - `Mobile Safari`
 - `PhantomJS`
 - `node.js` >= `11.0`
+
+
+## License
+
+[Public Domain](http://creativecommons.org/publicdomain/zero/1.0/)
 
 
 ## Usage
