@@ -4,7 +4,7 @@
     "type": "git",
     "url": "https://github.com/kjirou/npm-rpglevel"
   },
-  "description": "A npm package for managing "Level" with "Exp" that is used by like RPG.",
+  "description": "A npm package for managing \"Level\" with \"Exp\" that is used by like RPG.",
   "version": "1.0.0",
   "author": "kjirou",
   "dependencies": {
