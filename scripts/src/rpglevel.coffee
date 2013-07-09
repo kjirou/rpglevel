@@ -4,6 +4,17 @@ do () ->
 
     @VERSION = '0.9.0'
 
+    @PRESET_EXP_TABLE_DEFINITIONS =
+      wiz_like: [(level, data) ->
+        if level is 2
+          1000
+        else if level in [3..14]
+          total = data.previousTotalExp * 1.72414
+          parseInt(total - data.previousTotalExp, 10)
+        else
+          data.exps[13]
+      ]
+
     @InvalidArgsError = class InvalidArgsError extends Error
       constructor: (@message) ->
         @name = 'InvalidArgsError'
@@ -30,6 +41,9 @@ do () ->
     defineExpTable: (args...) ->
       if args[0] instanceof Array
         @_necessaryExps = args[0]
+      else if typeof args[0] is 'string'
+        def = @_getExpTableDefinition(args[0])
+        @_necessaryExps = @_generateNecessaryExps.apply(@, def)
       else
         @_necessaryExps = @_generateNecessaryExps(args[0], args[1])
 
@@ -42,15 +56,36 @@ do () ->
         maxLevel: 99
       , options)
 
+      exps = []
+      previousExp = 0
+      previousTotalExp = 0
+      memo = {}
+
       @_necessaryExps = for level in [@_minLevel..opts.maxLevel]
+
         if level <= opts.startLevel
-          0
+          exp = 0
         else
-          formula(level, {
+          exp = formula(level, {
+            self: @
             minLevel: @_minLevel
             startLevel: opts.startLevel
             maxLevel: opts.maxLevel
+            levelDelta: opts.maxLevel - opts.startLevel
+            exps: exps
+            previousExp: previousExp
+            previousTotalExp: previousTotalExp
+            memo: memo
           })
+          previousExp = exp
+          previousTotalExp += exp
+        exps.push exp
+        exp
+
+    _getExpTableDefinition: (key) ->
+      if key of RPGLevel.PRESET_EXP_TABLE_DEFINITIONS
+        return RPGLevel.PRESET_EXP_TABLE_DEFINITIONS[key]
+      throw new InvalidArgsError "Not found Exp-Table, key=#{key}"
 
     getMinLevel: -> @_minLevel
 
