@@ -90,7 +90,7 @@ do () ->
       else if @_exp < 0
         @_exp = 0
 
-      @_cachedLevelStatuses = null
+      @_cleanCaches()
       afterLevel = @getLevel()
 
       return [beforeLevel, afterLevel]
@@ -102,6 +102,12 @@ do () ->
     drainExp: (exp) ->
       [beforeLevel, afterLevel] = @_updateExp(-exp)
       afterLevel - beforeLevel
+
+    setExp: (exp) ->
+      @_exp = exp
+      @_cleanCaches()
+
+    resetExp: () -> @setExp(0)
 
     gainLevel: (levelUpCount) ->
       from = @getLevel()
@@ -132,6 +138,8 @@ do () ->
     _hasCachedLevelStatuses: ->
         @_cachedLevelStatuses isnt null
 
+    _cleanCaches: -> @_cachedLevelStatuses = null
+
     getStatuses: ->
       if @_hasCachedLevelStatuses()
         return @_extend({}, @_cachedLevelStatuses)
@@ -161,11 +169,9 @@ do () ->
 
       statuses
 
-    getLevel: ->
-        @getStatuses().level
+    getLevel: -> @getStatuses().level
 
-    isMaxLevel: ->
-        @getLevel() is @getMaxLevel()
+    isMaxLevel: -> @getLevel() is @getMaxLevel()
 
 
   # Exports
