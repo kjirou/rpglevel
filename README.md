@@ -10,7 +10,7 @@ A npm package for creating RPG Level objects.
 - [Stable development version](https://raw.github.com/kjirou/npm-rpglevel/master/rpglevel.js)
 - [Old releases](https://github.com/kjirou/npm-rpglevel/releases)
 
-Or, if you can use `node.js`:
+Or, if you can use node.js:
 ```
 $ npm install rpglevel
 ```
@@ -67,8 +67,16 @@ console.log(lv.getStatuses());  // -> { level:3, .. }
 ### RPGLevel Instance
 
 - `defineExpTable(necessaryExps)`
+  - Set Exp-Table by delta exp list. For example, [0, 2, 4, 8] means what it needs total exps [Lv1=0, Lv2=2, Lv3=6, Lv4=14].
+  - For that reason, list[0] is always to contain 0.
 - `defineExpTable(formula, options={})`
+  - Set Exp-Table by formula that is  for each levels.
+  - Define a fomula like `function(level){ return level * level; }`.
+  - Also, a fomula has helper data for calculation in second arg, it is usable as `function(level, data){ .. }`.
 - `defineExpTable(definitionKey)`
+  - You can use Exp-Table presets by assigning key.
+  - You can assign a only one "wiz_like" key, now.
+  - The "wiz_like" key loads Exp-Table like a famous RPG...
 - `getMinLevel()`
 - `getMaxLevel()`
 - `getStartLevel()`
@@ -79,10 +87,13 @@ console.log(lv.getStatuses());  // -> { level:3, .. }
 - `setExp(exp)`
 - `resetExp()`
 - `gainExp(exp)`
+  - That returns usually `false`, but if you got levels up, then that returns `true`.
 - `drainExp(exp)`
+  - That reduces your exps.
 - `gainLevel(levelUpCount)`
 - `drainLevel(levelDownCount)`
 - `getStatuses()`
+  - Return your statuses about level and exps.
 - `getLevel()`
 - `isMaxLevel()`
 
