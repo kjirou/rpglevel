@@ -5,6 +5,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-concat'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-contrib-watch'
+  grunt.loadNpmTasks 'grunt-mocha-test'
   grunt.loadNpmTasks 'grunt-notify'
   grunt.loadNpmTasks 'grunt-testem'
   grunt.loadNpmTasks 'grunt-text-replace'
@@ -124,6 +125,10 @@ module.exports = (grunt) ->
           'test/index.html'
         ]
 
+    mochaTest:
+      main:
+        src: ['<%= constants.builded.js.node_test %>']
+
     replace:
       version:
         src: [
@@ -152,6 +157,11 @@ module.exports = (grunt) ->
   grunt.registerTask 'test', [
     'build'
     'testem:main'
+  ]
+
+  grunt.registerTask 'test:node', [
+    'build:node'
+    'mochaTest:main'
   ]
 
   grunt.registerTask 'testall', [
