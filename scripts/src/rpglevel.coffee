@@ -136,13 +136,27 @@ do () ->
 
       return [beforeLevel, afterLevel]
 
+    _createExpUpdateResults: (beforeExp, afterExp, beforeLevel, afterLevel) ->
+      {
+        beforeExp: beforeExp
+        afterExp: afterExp
+        expDelta: afterExp - beforeExp
+        beforeLevel: beforeLevel
+        afterLevel: afterLevel
+        levelDelta: afterLevel - beforeLevel
+        isLevelUp: afterLevel > beforeLevel
+        isLevelDown: afterLevel < beforeLevel
+      }
+
     gainExp: (exp) ->
+      beforeExp = @_exp
       [beforeLevel, afterLevel] = @_updateExp(exp)
-      afterLevel - beforeLevel
+      @_createExpUpdateResults beforeExp, @_exp, beforeLevel, afterLevel
 
     drainExp: (exp) ->
+      beforeExp = @_exp
       [beforeLevel, afterLevel] = @_updateExp(-exp)
-      afterLevel - beforeLevel
+      @_createExpUpdateResults beforeExp, @_exp, beforeLevel, afterLevel
 
     gainLevel: (levelUpCount) ->
       from = @getLevel()

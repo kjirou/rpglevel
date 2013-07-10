@@ -139,21 +139,23 @@ describe('RPGLevel Instance ::', ->
     expect(lv.getExp()).to.be(1)
   )
 
-  it('gainExp returns delta levels', ->
+  it('gainExp returns level-up infos', ->
     lv = new RPGLevel
-    lv.defineExpTable([0, 3, 3])
-    expect(lv.gainExp(1)).to.be(0)
-    expect(lv.gainExp(1)).to.be(0)
-    expect(lv.gainExp(1)).to.be(1)
-    expect(lv.gainExp(1)).to.be(0)
-    expect(lv.gainExp(1)).to.be(0)
-    expect(lv.gainExp(1)).to.be(1)
+    lv.defineExpTable([0, 3, 3, 3, 3, 3])
 
-    # Multi levels up at a one time
-    lv = new RPGLevel
-    lv.defineExpTable([0, 1, 2, 4, 8])
-    expect(lv.gainExp(4)).to.be(2)
-    expect(lv.gainExp(1)).to.be(0)
+    lv.gainExp(1)
+    res = lv.gainExp(6)
+    expect(res.isLevelUp).to.be(true)
+    expect(res.isLevelDown).to.be(false)
+    expect(res.beforeExp).to.be(1)
+    expect(res.afterExp).to.be(7)
+    expect(res.expDelta).to.be(6)
+    expect(res.beforeLevel).to.be(1)
+    expect(res.afterLevel).to.be(3)
+    expect(res.levelDelta).to.be(2)
+
+    expect(lv.gainExp(1).isLevelUp).to.be(false)
+    expect(lv.gainExp(1).isLevelUp).to.be(true)
   )
 
   it('Exp is not over max Exp / isMaxLevel', ->
@@ -166,7 +168,9 @@ describe('RPGLevel Instance ::', ->
     expect(lv.isMaxLevel()).to.be(true)
 
     # Threshold check
-    expect(lv.gainExp(1)).to.be(0)
+    res = lv.gainExp(1)
+    expect(res.expDelta).to.be(0)
+    expect(res.levelDelta).to.be(0)
   )
 
   it('drainExp', ->
@@ -175,10 +179,10 @@ describe('RPGLevel Instance ::', ->
     lv.gainExp(35)
 
     expect(lv.getLevel()).to.be(4)
-    expect(lv.drainExp(5)).to.be(0)
-    expect(lv.drainExp(1)).to.be(-1)
-    expect(lv.drainExp(1)).to.be(0)
-    expect(lv.drainExp(24)).to.be(-2)
+    expect(lv.drainExp(5).levelDelta).to.be(0)
+    expect(lv.drainExp(1).levelDelta).to.be(-1)
+    expect(lv.drainExp(1).levelDelta).to.be(0)
+    expect(lv.drainExp(24).levelDelta).to.be(-2)
     expect(lv.getLevel()).to.be(1)
   )
 
