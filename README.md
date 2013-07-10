@@ -127,7 +127,7 @@ $ grunt
 
 ### Build commands
 
-- `grunt` builds all files for development by browser.
+- `grunt` builds all files for development on web.
 - `grunt watch` executes `grunt` each time at updating CoffeeScript files.
 - `grunt release` generates JavaScript files for release.
 
@@ -136,5 +136,5 @@ $ grunt
 - Open [test/index.html](test/index.html)
 - Execute `testem` or `testem server`, after that, open [http://localhost:7357/](http://localhost:7357/)
 - `grunt test` is CI test by PhantomJS only.
-- `grunt testall` is CI test by PhantomJS, Chrome, Firefox and Safari.
-- `npm test` tests by node.js.
+- `grunt test:xb` is CI test by PhantomJS, Chrome, Firefox and Safari.
+- `grunt test:node` tests by node.js with building processes.

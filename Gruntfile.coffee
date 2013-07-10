@@ -126,6 +126,8 @@ module.exports = (grunt) ->
         ]
 
     mochaTest:
+      options:
+        grep: '<%= grunt.cli.options.grep ? grunt.cli.options.grep : "" %>'
       main:
         src: ['<%= constants.builded.js.node_test %>']
 
@@ -164,7 +166,7 @@ module.exports = (grunt) ->
     'mochaTest:main'
   ]
 
-  grunt.registerTask 'testall', [
+  grunt.registerTask 'test:xb', [
     'build'
     'testem:all_launchers'
   ]
@@ -180,4 +182,6 @@ module.exports = (grunt) ->
     'uglify:production'
   ]
 
+  # Aliases
+  grunt.registerTask 'n', ['test:node']
   grunt.registerTask 'default', ['build']
