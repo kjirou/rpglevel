@@ -34,6 +34,9 @@ $ npm install rpglevel
 
 ## Usage
 ```
+// If you want to use by node.js
+//var RPGLevel = require('rpglevel');
+
 var lv = new RPGLevel();
 
 //
