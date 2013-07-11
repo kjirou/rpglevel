@@ -24,7 +24,7 @@ $ npm install rpglevel
 - `Safari`
 - `Mobile Safari`
 - `PhantomJS`
-- `node.js` >= `11.0`
+- `node.js` >= `0.11.0`
 
 
 ## License
@@ -115,7 +115,7 @@ Sorry, these are not enough. Please look a [source code](https://github.com/kjir
 
 ### Dependencies
 
-- `node.js` >= `11.0`, e.g. `brew install node`
+- `node.js` >= `0.11.0`, e.g. `brew install node`
 - `PhantomJS`, e.g. `brew install phantomjs`
 
 ```
