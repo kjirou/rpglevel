@@ -94,13 +94,14 @@ console.log(lv.getStatuses());  // -> { level:3, .. }
 - `setExp(exp)`
 - `resetExp()`
 - `gainExp(exp)`
-  - That returns usually `false`, but if you got levels up, then that returns `true`.
+  - That returns a `object` what includes informations about growths in this time.
+  - The `object` is like this: `{ beforeLevel: 3, afterLevel: 5, levelDelta: 2, isLevelUp: true ... }`.
 - `drainExp(exp)`
   - That reduces your exps.
 - `gainLevel(levelUpCount)`
 - `drainLevel(levelDownCount)`
 - `getStatuses()`
-  - Return your statuses about level and exps.
+  - Returns your statuses about level and exps.
 - `getLevel()`
 - `isMaxLevel()`
 
@@ -140,3 +141,8 @@ $ grunt
 - `grunt test` is CI test by PhantomJS only.
 - `grunt test:xb` is CI test by PhantomJS, Chrome, Firefox and Safari.
 - `grunt test:node` tests by node.js with building processes.
+
+
+## Related Links
+
+- [npm - rpglevel](https://npmjs.org/package/rpglevel)
