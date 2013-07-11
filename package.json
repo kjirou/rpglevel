@@ -7,6 +7,10 @@
   "description": "A npm package for managing \"Level\" with \"Exp\" that is used by like RPG.",
   "version": "1.1.0",
   "author": "kjirou",
+  "keywords": [
+    "RPG",
+    "game"
+  ],
   "dependencies": {
   },
   "devDependencies": {
