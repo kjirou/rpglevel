@@ -9,7 +9,7 @@
     RPGLevel = (function() {
       var InvalidArgsError;
 
-      RPGLevel.VERSION = '1.0.0';
+      RPGLevel.VERSION = '1.1.0';
 
       RPGLevel.PRESET_EXP_TABLE_DEFINITIONS = {
         wiz_like: [
@@ -56,14 +56,29 @@
         return obj;
       };
 
+      RPGLevel._expTableDefinitions = {};
+
+      RPGLevel.registerExpTableDefinition = function() {
+        var args, key;
+        key = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+        if (key in this._expTableDefinitions) {
+          throw new InvalidArgsError("Already exists Exp-Table key=" + key);
+        }
+        return this._expTableDefinitions[key] = args;
+      };
+
+      RPGLevel.cleanExpTableDefinitions = function() {
+        return this._expTableDefinitions = {};
+      };
+
       RPGLevel.prototype.defineExpTable = function() {
-        var args, def;
+        var args;
         args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+        if (typeof args[0] === 'string') {
+          args = this._getExpTableDefinition(args[0]);
+        }
         if (args[0] instanceof Array) {
           this._necessaryExps = args[0];
-        } else if (typeof args[0] === 'string') {
-          def = this._getExpTableDefinition(args[0]);
-          this._necessaryExps = this._generateNecessaryExps.apply(this, def);
         } else {
           this._necessaryExps = this._generateNecessaryExps(args[0], args[1]);
         }
@@ -114,6 +129,9 @@
       };
 
       RPGLevel.prototype._getExpTableDefinition = function(key) {
+        if (key in RPGLevel._expTableDefinitions) {
+          return RPGLevel._expTableDefinitions[key];
+        }
         if (key in RPGLevel.PRESET_EXP_TABLE_DEFINITIONS) {
           return RPGLevel.PRESET_EXP_TABLE_DEFINITIONS[key];
         }
@@ -192,16 +210,31 @@
         return [beforeLevel, afterLevel];
       };
 
+      RPGLevel.prototype._createExpUpdateResults = function(beforeExp, afterExp, beforeLevel, afterLevel) {
+        return {
+          beforeExp: beforeExp,
+          afterExp: afterExp,
+          expDelta: afterExp - beforeExp,
+          beforeLevel: beforeLevel,
+          afterLevel: afterLevel,
+          levelDelta: afterLevel - beforeLevel,
+          isLevelUp: afterLevel > beforeLevel,
+          isLevelDown: afterLevel < beforeLevel
+        };
+      };
+
       RPGLevel.prototype.gainExp = function(exp) {
-        var afterLevel, beforeLevel, _ref;
+        var afterLevel, beforeExp, beforeLevel, _ref;
+        beforeExp = this._exp;
         _ref = this._updateExp(exp), beforeLevel = _ref[0], afterLevel = _ref[1];
-        return afterLevel - beforeLevel;
+        return this._createExpUpdateResults(beforeExp, this._exp, beforeLevel, afterLevel);
       };
 
       RPGLevel.prototype.drainExp = function(exp) {
-        var afterLevel, beforeLevel, _ref;
+        var afterLevel, beforeExp, beforeLevel, _ref;
+        beforeExp = this._exp;
         _ref = this._updateExp(-exp), beforeLevel = _ref[0], afterLevel = _ref[1];
-        return afterLevel - beforeLevel;
+        return this._createExpUpdateResults(beforeExp, this._exp, beforeLevel, afterLevel);
       };
 
       RPGLevel.prototype.gainLevel = function(levelUpCount) {
