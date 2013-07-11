@@ -68,6 +68,8 @@ console.log(lv.getStatuses());  // -> { level:3, .. }
 
 - `new RPGLevel()`
 - `VERSION = "X.X.X"`
+- `registerExpTableDefinition(definitionKey, argsForDefineExpTable...)`
+- `cleanExpTableDefinitions()`
 
 ### RPGLevel Instance
 
