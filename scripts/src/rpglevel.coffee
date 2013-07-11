@@ -38,12 +38,22 @@ do () ->
       obj[k] = v for k, v of props
       obj
 
+    @_expTableDefinitions = {}
+
+    @registerExpTableDefinition = (key, args...) ->
+      if key of @_expTableDefinitions
+        throw new InvalidArgsError "Already exists Exp-Table key=#{key}"
+      @_expTableDefinitions[key] = args
+
+    @cleanExpTableDefinitions = ->
+      @_expTableDefinitions = {}
+
     defineExpTable: (args...) ->
+      if typeof args[0] is 'string'
+        args = @_getExpTableDefinition(args[0])
+
       if args[0] instanceof Array
         @_necessaryExps = args[0]
-      else if typeof args[0] is 'string'
-        def = @_getExpTableDefinition(args[0])
-        @_necessaryExps = @_generateNecessaryExps.apply(@, def)
       else
         @_necessaryExps = @_generateNecessaryExps(args[0], args[1])
 
@@ -83,6 +93,8 @@ do () ->
         exp
 
     _getExpTableDefinition: (key) ->
+      if key of RPGLevel._expTableDefinitions
+        return RPGLevel._expTableDefinitions[key]
       if key of RPGLevel.PRESET_EXP_TABLE_DEFINITIONS
         return RPGLevel.PRESET_EXP_TABLE_DEFINITIONS[key]
       throw new InvalidArgsError "Not found Exp-Table, key=#{key}"

@@ -274,4 +274,47 @@ describe('Exp-Tables Management ::', ->
       expect(lv.getNecessaryExpByLevel(99)).to.be(289712)
     )
   )
+
+  describe('Custom Exp-Tables ::', ->
+
+    afterEach(->
+      RPGLevel.cleanExpTableDefinitions()
+    )
+
+    it('cleanExpTableDefinitions', ->
+      expect(RPGLevel._expTableDefinitions).to.eql({})
+      RPGLevel.registerExpTableDefinition('foo', [0, 1, 2, 4])
+      RPGLevel.registerExpTableDefinition('bar', [0, 1, 2, 4])
+      expect('foo' of RPGLevel._expTableDefinitions).to.ok()
+      expect('bar' of RPGLevel._expTableDefinitions).to.ok()
+      RPGLevel.cleanExpTableDefinitions()
+      expect(RPGLevel._expTableDefinitions).to.eql({})
+    )
+
+    it('Throw a error at registering duplicated key', ->
+      RPGLevel.registerExpTableDefinition('foo', [0, 1, 2, 4])
+      expect(->
+        RPGLevel.registerExpTableDefinition('foo', [0, 1, 2, 4])
+      ).throwException((e) ->
+        expect(e).to.be.a(RPGLevel.InvalidArgsError)
+      )
+    )
+
+    it('registerExpTableDefinition', ->
+      RPGLevel.registerExpTableDefinition('foo', [0, 1, 2, 4])
+      RPGLevel.registerExpTableDefinition('bar', (level) ->
+        level * level
+      , {
+        maxLevel: 3
+      })
+
+      lv = new RPGLevel
+      lv.defineExpTable('foo')
+      expect(lv.getMaxExp()).to.be(1 + 2 + 4)
+
+      lv = new RPGLevel
+      lv.defineExpTable('bar')
+      expect(lv.getMaxExp()).to.be(2 * 2 + 3 * 3)
+    )
+  )
 )
