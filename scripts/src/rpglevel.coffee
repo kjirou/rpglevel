@@ -4,7 +4,7 @@ do () ->
 
     @VERSION = '1.1.0'
 
-    @PRESET_EXP_TABLE_DEFINITIONS =
+    @DEFAULT_EXP_TABLE_PRESETS =
       wiz_like: [(level, data) ->
         if level is 2
           1000
@@ -38,19 +38,30 @@ do () ->
       obj[k] = v for k, v of props
       obj
 
-    @_expTableDefinitions = {}
+    @_expTablePresets = {}
 
-    @registerExpTableDefinition = (key, args...) ->
-      if key of @_expTableDefinitions
+    @registerExpTablePreset = (key, args...) ->
+      if @_getExpTablePreset(key)
         throw new InvalidArgsError "Already exists Exp-Table key=#{key}"
-      @_expTableDefinitions[key] = args
+      @_expTablePresets[key] = args
 
-    @cleanExpTableDefinitions = ->
-      @_expTableDefinitions = {}
+    @resetExpTablePresets = ->
+      @_expTablePresets = {}
+
+    @_getExpTablePreset: (key) ->
+      if key of @_expTablePresets
+        return @_expTablePresets[key]
+      if key of @DEFAULT_EXP_TABLE_PRESETS
+        return @DEFAULT_EXP_TABLE_PRESETS[key]
+      null
+
+    @_getExpTablePresetOrError: (key) ->
+      @_getExpTablePreset(key) ?
+        throw new InvalidArgsError "Not found Exp-Table, key=#{key}"
 
     defineExpTable: (args...) ->
       if typeof args[0] is 'string'
-        args = @_getExpTableDefinition(args[0])
+        args = RPGLevel._getExpTablePresetOrError(args[0])
 
       if args[0] instanceof Array
         @_necessaryExps = args[0]
@@ -91,13 +102,6 @@ do () ->
           previousTotalExp += exp
         exps.push exp
         exp
-
-    _getExpTableDefinition: (key) ->
-      if key of RPGLevel._expTableDefinitions
-        return RPGLevel._expTableDefinitions[key]
-      if key of RPGLevel.PRESET_EXP_TABLE_DEFINITIONS
-        return RPGLevel.PRESET_EXP_TABLE_DEFINITIONS[key]
-      throw new InvalidArgsError "Not found Exp-Table, key=#{key}"
 
     getMinLevel: -> @_minLevel
 

@@ -71,8 +71,8 @@ console.log(lv.getStatuses());  // -> { level:3, .. }
 
 - `new RPGLevel()`
 - `VERSION = "X.X.X"`
-- `registerExpTableDefinition(definitionKey, argsForDefineExpTable...)`
-- `cleanExpTableDefinitions()`
+- `registerExpTablePreset(definitionKey, argsForDefineExpTable...)`
+- `resetExpTablePresets()`
 
 ### RPGLevel Instance
 
@@ -86,7 +86,7 @@ console.log(lv.getStatuses());  // -> { level:3, .. }
 - `defineExpTable(definitionKey)`
   - You can use Exp-Table presets by assigning key.
   - You can assign a only one "wiz_like" key, now.
-  - The "wiz_like" key loads Exp-Table like a famous RPG...
+  - The "wiz_like" key loads Exp-Table like a famous RPG.
 - `getMinLevel()`
 - `getMaxLevel()`
 - `getStartLevel()`

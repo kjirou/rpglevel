@@ -278,31 +278,31 @@ describe('Exp-Tables Management ::', ->
   describe('Custom Exp-Tables ::', ->
 
     afterEach(->
-      RPGLevel.cleanExpTableDefinitions()
+      RPGLevel.resetExpTablePresets()
     )
 
-    it('cleanExpTableDefinitions', ->
-      expect(RPGLevel._expTableDefinitions).to.eql({})
-      RPGLevel.registerExpTableDefinition('foo', [0, 1, 2, 4])
-      RPGLevel.registerExpTableDefinition('bar', [0, 1, 2, 4])
-      expect('foo' of RPGLevel._expTableDefinitions).to.ok()
-      expect('bar' of RPGLevel._expTableDefinitions).to.ok()
-      RPGLevel.cleanExpTableDefinitions()
-      expect(RPGLevel._expTableDefinitions).to.eql({})
+    it('resetExpTablePresets', ->
+      expect(RPGLevel._expTablePresets).to.eql({})
+      RPGLevel.registerExpTablePreset('foo', [0, 1, 2, 4])
+      RPGLevel.registerExpTablePreset('bar', [0, 1, 2, 4])
+      expect('foo' of RPGLevel._expTablePresets).to.ok()
+      expect('bar' of RPGLevel._expTablePresets).to.ok()
+      RPGLevel.resetExpTablePresets()
+      expect(RPGLevel._expTablePresets).to.eql({})
     )
 
     it('Throw a error at registering duplicated key', ->
-      RPGLevel.registerExpTableDefinition('foo', [0, 1, 2, 4])
+      RPGLevel.registerExpTablePreset('foo', [0, 1, 2, 4])
       expect(->
-        RPGLevel.registerExpTableDefinition('foo', [0, 1, 2, 4])
+        RPGLevel.registerExpTablePreset('foo', [0, 1, 2, 4])
       ).throwException((e) ->
         expect(e).to.be.a(RPGLevel.InvalidArgsError)
       )
     )
 
-    it('registerExpTableDefinition', ->
-      RPGLevel.registerExpTableDefinition('foo', [0, 1, 2, 4])
-      RPGLevel.registerExpTableDefinition('bar', (level) ->
+    it('registerExpTablePreset', ->
+      RPGLevel.registerExpTablePreset('foo', [0, 1, 2, 4])
+      RPGLevel.registerExpTablePreset('bar', (level) ->
         level * level
       , {
         maxLevel: 3
