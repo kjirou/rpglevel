@@ -71,7 +71,7 @@ console.log(lv.getStatuses());  // -> { level:3, .. }
 
 - `new RPGLevel()`
 - `VERSION = "X.X.X"`
-- `registerExpTablePreset(definitionKey, argsForDefineExpTable...)`
+- `registerExpTablePreset(presetKey, argsForDefineExpTable...)`
 - `resetExpTablePresets()`
 
 ### RPGLevel Instance
@@ -83,7 +83,7 @@ console.log(lv.getStatuses());  // -> { level:3, .. }
   - Set Exp-Table by formula that is  for each levels.
   - Define a fomula like `function(level){ return level * level; }`.
   - Also, a fomula has helper data for calculation in second arg, it is usable as `function(level, data){ .. }`.
-- `defineExpTable(definitionKey)`
+- `defineExpTable(presetKey)`
   - You can use Exp-Table presets by assigning key.
   - You can assign a only one "wiz_like" key, now.
   - The "wiz_like" key loads Exp-Table like a famous RPG.
