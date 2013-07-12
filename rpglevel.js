@@ -9,9 +9,9 @@
     RPGLevel = (function() {
       var InvalidArgsError;
 
-      RPGLevel.VERSION = '1.1.0';
+      RPGLevel.VERSION = '1.1.1';
 
-      RPGLevel.PRESET_EXP_TABLE_DEFINITIONS = {
+      RPGLevel.DEFAULT_EXP_TABLE_PRESETS = {
         wiz_like: [
           function(level, data) {
             var total;
@@ -56,26 +56,47 @@
         return obj;
       };
 
-      RPGLevel._expTableDefinitions = {};
+      RPGLevel._expTablePresets = {};
 
-      RPGLevel.registerExpTableDefinition = function() {
+      RPGLevel.registerExpTablePreset = function() {
         var args, key;
         key = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-        if (key in this._expTableDefinitions) {
+        if (this._getExpTablePreset(key)) {
           throw new InvalidArgsError("Already exists Exp-Table key=" + key);
         }
-        return this._expTableDefinitions[key] = args;
+        return this._expTablePresets[key] = args;
       };
 
-      RPGLevel.cleanExpTableDefinitions = function() {
-        return this._expTableDefinitions = {};
+      RPGLevel.resetExpTablePresets = function() {
+        return this._expTablePresets = {};
+      };
+
+      RPGLevel._getExpTablePreset = function(key) {
+        if (key in this._expTablePresets) {
+          return this._expTablePresets[key];
+        }
+        if (key in this.DEFAULT_EXP_TABLE_PRESETS) {
+          return this.DEFAULT_EXP_TABLE_PRESETS[key];
+        }
+        return null;
+      };
+
+      RPGLevel._getExpTablePresetOrError = function(key) {
+        var _ref;
+        return (function() {
+          if ((_ref = this._getExpTablePreset(key)) != null) {
+            return _ref;
+          } else {
+            throw new InvalidArgsError("Not found Exp-Table, key=" + key);
+          }
+        }).call(this);
       };
 
       RPGLevel.prototype.defineExpTable = function() {
         var args;
         args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
         if (typeof args[0] === 'string') {
-          args = this._getExpTableDefinition(args[0]);
+          args = RPGLevel._getExpTablePresetOrError(args[0]);
         }
         if (args[0] instanceof Array) {
           this._necessaryExps = args[0];
@@ -126,16 +147,6 @@
           }
           return _results;
         }).call(this);
-      };
-
-      RPGLevel.prototype._getExpTableDefinition = function(key) {
-        if (key in RPGLevel._expTableDefinitions) {
-          return RPGLevel._expTableDefinitions[key];
-        }
-        if (key in RPGLevel.PRESET_EXP_TABLE_DEFINITIONS) {
-          return RPGLevel.PRESET_EXP_TABLE_DEFINITIONS[key];
-        }
-        throw new InvalidArgsError("Not found Exp-Table, key=" + key);
       };
 
       RPGLevel.prototype.getMinLevel = function() {
