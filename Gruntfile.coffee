@@ -139,8 +139,8 @@ module.exports = (grunt) ->
         ]
         overwrite: true
         replacements: [
-          from: /(['"])1\.1\.0(['"])/
-          to: '$11.1.1$2'
+          from: /(['"])1\.1\.1(['"])/
+          to: '$11.1.2$2'
         ]
 
 

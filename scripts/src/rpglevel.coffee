@@ -2,7 +2,7 @@ do () ->
 
   class RPGLevel
 
-    @VERSION = '1.1.1'
+    @VERSION = '1.1.2'
 
     @DEFAULT_EXP_TABLE_PRESETS =
       wiz_like: [(level, data) ->

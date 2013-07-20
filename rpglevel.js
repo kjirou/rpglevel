@@ -5,11 +5,11 @@
     __slice = [].slice;
 
   (function() {
-    var RPGLevel;
+    var RPGLevel, rpglevel;
     RPGLevel = (function() {
       var InvalidArgsError;
 
-      RPGLevel.VERSION = '1.1.1';
+      RPGLevel.VERSION = '1.1.2';
 
       RPGLevel.DEFAULT_EXP_TABLE_PRESETS = {
         wiz_like: [
@@ -320,10 +320,19 @@
       return RPGLevel;
 
     })();
-    if (typeof module !== 'undefined') {
-      return module.exports = RPGLevel;
-    } else {
-      return window.RPGLevel = RPGLevel;
+    rpglevel = {
+      RPGLevel: RPGLevel
+    };
+    if (typeof module !== 'undefined' && module.exports) {
+      module.exports = rpglevel;
+    }
+    if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
+      define('rpglevel', function() {
+        return rpglevel;
+      });
+    }
+    if (typeof window !== 'undefined') {
+      return window.rpglevel = rpglevel;
     }
   })();
 
