@@ -1,11 +1,11 @@
 if typeof require isnt 'undefined'
   expect = require 'expect.js'
   sinon = require 'sinon'
-  RPGLevel = require './rpglevel.js'
+  RPGLevel = require('./rpglevel.js').RPGLevel
 else
   expect = @expect
   sinon = @sinon
-  RPGLevel = @RPGLevel
+  RPGLevel = @rpglevel.RPGLevel
 
 
 describe('RPGLevel Class ::', ->

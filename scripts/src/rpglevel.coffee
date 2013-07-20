@@ -238,9 +238,12 @@ do () ->
 
     isMaxLevel: -> @getLevel() is @getMaxLevel()
 
+  rpglevel = RPGLevel: RPGLevel
 
   # Exports
-  if typeof module isnt 'undefined'
-    module.exports = RPGLevel
-  else
-    window.RPGLevel = RPGLevel
+  if typeof module isnt 'undefined' and module.exports
+    module.exports = rpglevel
+  if typeof define is 'function' && typeof define.amd is 'object' && define.amd
+    define('rpglevel', -> rpglevel)
+  if typeof window isnt 'undefined'
+    window.rpglevel = rpglevel

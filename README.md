@@ -34,8 +34,11 @@ $ npm install rpglevel
 
 ## Usage
 ```
-// If you want to use by node.js
-//var RPGLevel = require('rpglevel');
+// v1.1.2 or later, global variable name is changed to `rpglevel` from `RPGLevel`.
+var RPGLevel = rpglevel.RPGLevel;
+
+// Or, if you want to use by node.js
+//var RPGLevel = require('rpglevel').RPGLevel;
 
 var lv = new RPGLevel();
 
