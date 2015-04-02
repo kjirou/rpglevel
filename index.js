@@ -13,7 +13,7 @@ var RPGLevel = function RPGLevel() {
 
   this._minLevel = 1;
 
-  this._cachedLevels = null;
+  this._cachedLevelStates = null;
 };
 
 RPGLevel.prototype.defineExpTable = function defineExpTable(formula, options) {
@@ -111,7 +111,7 @@ RPGLevel.prototype.getMaxExp = function getMaxExp() {
 };
 
 RPGLevel.prototype._cleanCaches = function _cleanCaches() {
-  this._cachedLevels = null;
+  this._cachedLevelStates = null;
 };
 
 RPGLevel.prototype.setExp = function setExp(exp) {
@@ -124,14 +124,14 @@ RPGLevel.prototype.resetExp = function resetExp() {
 };
 
 RPGLevel.prototype._hasCachedLevels = function _hasCachedLevels() {
-  return !!this._cachedLevels;
+  return !!this._cachedLevelStates;
 };
 
 RPGLevel.prototype.getStates = function getStates() {
   var self = this;
 
   if (this._hasCachedLevels) {
-    return _.cloneDeep(this._cachedLevels);
+    return _.cloneDeep(this._cachedLevelStates);
   }
 
   var myLevel = 0;
@@ -159,7 +159,7 @@ RPGLevel.prototype.getStates = function getStates() {
     lackExpForNext: necessaryExpForNext - gainedExpForNext
   };
 
-  this._cachedLevels = _.cloneDeep(states);
+  this._cachedLevelStates = _.cloneDeep(states);
 
   return states;
 };
