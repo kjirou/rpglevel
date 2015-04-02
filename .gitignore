@@ -28,6 +28,7 @@ testem.*.*.*.json
 
 
 # Project settings
+.envrc
 build/
 test/assets/build/
 !test/assets/node_modules/

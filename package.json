@@ -1,35 +1,36 @@
 {
   "name": "rpglevel",
+  "description": "A npm package for managing \"Level\" with \"Exp\" that is used by like RPG.",
+  "version": "2.0.0",
+  "author": "kjirou",
+  "bugs": {
+    "url": "https://github.com/kjirou/npm-rpglevel/issues"
+  },
+  "dependencies": {
+    "lodash": "3.6.0"
+  },
+  "devDependencies": {
+    "browserify": "9.0.4",
+    "fixpack": "2.2.0",
+    "mocha": "2.2.1",
+    "sinon": "1.14.1",
+    "testem": "0.7.6"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "homepage": "https://github.com/kjirou/npm-rpglevel",
+  "keywords": [
+    "rpg",
+    "game"
+  ],
+  "license": "MIT",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/kjirou/npm-rpglevel"
   },
-  "description": "A npm package for managing \"Level\" with \"Exp\" that is used by like RPG.",
-  "version": "1.1.2",
-  "author": "kjirou",
-  "keywords": [
-    "RPG",
-    "game"
-  ],
-  "dependencies": {
-  },
-  "devDependencies": {
-    "grunt": "*",
-    "grunt-contrib-clean": "*",
-    "grunt-contrib-coffee": "*",
-    "grunt-contrib-concat": "*",
-    "grunt-contrib-uglify": "*",
-    "grunt-contrib-watch": "*",
-    "grunt-mocha-test": "*",
-    "grunt-notify": "*",
-    "grunt-testem": "*",
-    "grunt-text-replace": "*",
-    "mocha": "*",
-    "expect.js": "*",
-    "sinon": "*"
-  },
-  "main": "rpglevel.js",
   "scripts": {
-    "test": "grunt test:node"
+    "test": "mocha"
   }
 }

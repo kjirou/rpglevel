@@ -1,16 +1,13 @@
-language: node_js
-
 node_js:
+  - "0.10"
   - "0.11"
-
-before_install:
-  - npm install -g grunt-cli testem
+  - "0.12"
 
 before_script:
-  - testem launchers
+  - npm bin
+  - $(npm bin)/testem launchers
 
 script:
-  - grunt travis
   - npm test
 
 branches:
