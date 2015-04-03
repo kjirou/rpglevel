@@ -12,6 +12,7 @@
   "devDependencies": {
     "browserify": "9.0.4",
     "fixpack": "2.2.0",
+    "jshint": "2.6.3",
     "mocha": "2.2.1",
     "sinon": "1.14.1",
     "testem": "0.7.6"
@@ -31,6 +32,7 @@
     "url": "https://github.com/kjirou/npm-rpglevel"
   },
   "scripts": {
+    "lint": "jshint index.js",
     "test": "mocha"
   }
 }
