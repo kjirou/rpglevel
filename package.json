@@ -33,8 +33,9 @@
   },
   "scripts": {
     "browser-test": "testem",
-    "ci-browser-test": "testem ci -l firefox,phantomjs",
     "build": "cp 'node_modules/mocha/mocha.*' public/dist & browserify public/tests.js > public/dist/bundle.js",
+    "ci-browser-test": "testem ci -l phantomjs",
+    "cli-browser-test": "testem ci -l phantomjs,chrome,firefox",
     "lint": "jshint index.js",
     "test": "mocha"
   }

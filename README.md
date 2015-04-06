@@ -89,4 +89,4 @@ console.log(lv.getStates());  // -> { level:3, .. }
 
 ## Development
 ### Preparation
-- Install `Firefox` and `PhantomJS`
+- Install `PhantomJS`
