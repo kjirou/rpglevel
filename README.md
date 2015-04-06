@@ -1,7 +1,7 @@
 # rpglevel
 
 [![npm version](https://badge.fury.io/js/rpglevel.svg)](http://badge.fury.io/js/rpglevel)
-[![Build Status](https://travis-ci.org/kjirou/npm-rpglevel.svg?branch=master)](https://travis-ci.org/kjirou/npm-rpglevel)
+[![Build Status](https://travis-ci.org/kjirou/rpglevel.svg?branch=master)](https://travis-ci.org/kjirou/rpglevel)
 
 Manage the "level" and the "exp"
 
