@@ -1,44 +1,22 @@
-rpglevel [![Build Status](https://travis-ci.org/kjirou/npm-rpglevel.png)](https://travis-ci.org/kjirou/npm-rpglevel)
-========
+# rpglevel
+
+[![npm version](https://badge.fury.io/js/rpglevel.svg)](http://badge.fury.io/js/rpglevel)
+[![Build Status](https://travis-ci.org/kjirou/npm-rpglevel.svg?branch=master)](https://travis-ci.org/kjirou/npm-rpglevel)
 
 A npm package for managing "Level" with "Exp" that is used by like RPG.
 
 
-## Download
-
-- [Stable production version](https://raw.github.com/kjirou/npm-rpglevel/master/rpglevel.min.js)
-- [Stable development version](https://raw.github.com/kjirou/npm-rpglevel/master/rpglevel.js)
-- [Old releases](https://github.com/kjirou/npm-rpglevel/releases)
-
-Or, if you can use node.js:
+## Installation
 ```
-$ npm install rpglevel
+npm install rpglevel
 ```
 
-
-## Supported browsers/node.js
-
-- `IE10`, `IE9`, `IE8`, `IE7`
-- `Chrome`
-- `Firefox`
-- `Safari`
-- `Mobile Safari`
-- `PhantomJS`
-- `node.js` >= `0.11.0`
-
-
-## License
-
-[Public Domain](http://creativecommons.org/publicdomain/zero/1.0/)
+Or, you can use in browser through the [browserify](https://github.com/substack/node-browserify).
 
 
 ## Usage
 ```
-// v1.1.2 or later, global variable name is changed to `rpglevel` from `RPGLevel`.
-var RPGLevel = rpglevel.RPGLevel;
-
-// Or, if you want to use by node.js
-//var RPGLevel = require('rpglevel').RPGLevel;
+var RPGLevel = require('rpglevel');
 
 var lv = new RPGLevel();
 
@@ -60,11 +38,11 @@ lv.defineExpTable(function(level){
 // You got exps with 2 levels up.
 lv.gainExp(10);
 
-// Getable your level.
+// get your level
 console.log(lv.getLevel());  // -> 3
 
-// Getable more infos.
-console.log(lv.getStatuses());  // -> { level:3, .. }
+// get more information
+console.log(lv.getStates());  // -> { level:3, .. }
 ```
 
 
@@ -79,17 +57,13 @@ console.log(lv.getStatuses());  // -> { level:3, .. }
 
 ### RPGLevel Instance
 
-- `defineExpTable(necessaryExps)`
-  - Set Exp-Table by delta exp list. For example, [0, 2, 4, 8] means what it needs total exps [Lv1=0, Lv2=2, Lv3=6, Lv4=14].
-  - For that reason, list[0] is always to contain 0.
 - `defineExpTable(formula, options={})`
   - Set Exp-Table by formula that is  for each levels.
   - Define a fomula like `function(level){ return level * level; }`.
   - Also, a fomula has helper data for calculation in second arg, it is usable as `function(level, data){ .. }`.
-- `defineExpTable(presetKey)`
-  - You can use Exp-Table presets by assigning key.
-  - You can assign a only one "wiz_like" key, now.
-  - The "wiz_like" key loads Exp-Table like a famous RPG.
+- `defineExpTableByArray(necessaryExps)`
+  - Set Exp-Table by delta exp list. For example, [0, 2, 4, 8] means what it needs total exps [Lv1=0, Lv2=2, Lv3=6, Lv4=14].
+  - For that reason, list[0] is always to contain 0.
 - `getMinLevel()`
 - `getMaxLevel()`
 - `getStartLevel()`
@@ -98,6 +72,7 @@ console.log(lv.getStatuses());  // -> { level:3, .. }
 - `getNecessaryExpByLevel(level)`
 - `getMaxExp()`
 - `setExp(exp)`
+- `setLevel(level)`
 - `resetExp()`
 - `gainExp(exp)`
   - That returns a `object` what includes informations about growths in this time.
@@ -106,49 +81,12 @@ console.log(lv.getStatuses());  // -> { level:3, .. }
   - That reduces your exps.
 - `gainLevel(levelUpCount)`
 - `drainLevel(levelDownCount)`
-- `getStatuses()`
+- `getStates()`
   - Returns your statuses about level and exps.
 - `getLevel()`
 - `isMaxLevel()`
 
-Sorry, these are not enough. Please look a [source code](https://github.com/kjirou/npm-rpglevel/blob/master/scripts/src/rpglevel.coffee).
-
 
 ## Development
-
-### Dependencies
-
-- `node.js` >= `0.11.0`, e.g. `brew install node`
-- `PhantomJS`, e.g. `brew install phantomjs`
-
-```
-$ npm install -g grunt-cli testem
-```
-
-### Deploy
-
-```
-$ git clone git@github.com:kjirou/npm-rpglevel.git
-$ cd npm-rpglevel
-$ npm install
-$ grunt
-```
-
-### Build commands
-
-- `grunt` builds all files for development on web.
-- `grunt watch` executes `grunt` each time at updating CoffeeScript files.
-- `grunt release` generates JavaScript files for release.
-
-### Testing
-
-- Open [test/index.html](test/index.html)
-- Execute `testem` or `testem server`, after that, open [http://localhost:7357/](http://localhost:7357/)
-- `grunt test` is CI test by PhantomJS only.
-- `grunt test:xb` is CI test by PhantomJS, Chrome, Firefox and Safari.
-- `grunt test:node` tests by node.js with building processes.
-
-
-## Related Links
-
-- [npm - rpglevel](https://npmjs.org/package/rpglevel)
+### Preparation
+- Install `PhantomJS`

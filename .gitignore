@@ -16,7 +16,6 @@
 .pydevproject
 .tox/
 develop-eggs/
-dist/
 eggs/
 env/
 node_modules/
@@ -28,6 +27,6 @@ testem.*.*.*.json
 
 
 # Project settings
-build/
-test/assets/build/
-!test/assets/node_modules/
+.envrc
+public/dist/*
+!public/dist/.gitkeep
