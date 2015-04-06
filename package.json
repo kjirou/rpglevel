@@ -1,7 +1,7 @@
 {
   "name": "rpglevel",
   "description": "Manage the \"level\" and the \"exp\"",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "author": "kjirou",
   "bugs": {
     "url": "https://github.com/kjirou/rpglevel/issues"
