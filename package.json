@@ -1,6 +1,6 @@
 {
   "name": "rpglevel",
-  "description": "A npm package for managing \"Level\" with \"Exp\" that is used by like RPG.",
+  "description": "Manage the \"level\" and the \"exp\"",
   "version": "2.0.0",
   "author": "kjirou",
   "bugs": {
@@ -32,6 +32,9 @@
     "url": "https://github.com/kjirou/npm-rpglevel"
   },
   "scripts": {
+    "browser-test": "testem",
+    "ci-browser-test": "testem ci -l chrome,firefox,phantomjs",
+    "build": "cp node_modules/mocha/mocha.{css,js} public/dist & browserify public/tests.js > public/dist/bundle.js",
     "lint": "jshint index.js",
     "test": "mocha"
   }

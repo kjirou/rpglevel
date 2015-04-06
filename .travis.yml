@@ -6,11 +6,12 @@ node_js:
   - "0.12"
 
 before_script:
-  - npm bin
   - $(npm bin)/testem launchers
 
 script:
   - npm test
+  - npm run build
+  - npm run ci-browser-test
 
 branches:
   except:

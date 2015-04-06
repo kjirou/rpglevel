@@ -89,4 +89,4 @@ console.log(lv.getStates());  // -> { level:3, .. }
 
 ## Development
 ### Preparation
-- Install `PhantomJS`, e.g. `brew install phantomjs`
+- Install `Chrome`, `Firefox` and `PhantomJS`

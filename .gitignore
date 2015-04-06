@@ -29,6 +29,6 @@ testem.*.*.*.json
 
 # Project settings
 .envrc
-build/
+public/dist/
 test/assets/build/
 !test/assets/node_modules/
