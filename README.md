@@ -3,7 +3,7 @@
 [![npm version](https://badge.fury.io/js/rpglevel.svg)](http://badge.fury.io/js/rpglevel)
 [![Build Status](https://travis-ci.org/kjirou/npm-rpglevel.svg?branch=master)](https://travis-ci.org/kjirou/npm-rpglevel)
 
-A npm package for managing "Level" with "Exp" that is used by like RPG.
+Manage the "level" and the "exp"
 
 
 ## Installation
@@ -14,7 +14,7 @@ npm install rpglevel
 Or, you can use in browser through the [browserify](https://github.com/substack/node-browserify).
 
 
-## Usage
+## Example
 ```
 var RPGLevel = require('rpglevel');
 
@@ -49,14 +49,9 @@ console.log(lv.getStates());  // -> { level:3, .. }
 ## API Reference
 
 ### RPGLevel Class
-
 - `new RPGLevel()`
-- `VERSION = "X.X.X"`
-- `registerExpTablePreset(presetKey, argsForDefineExpTable...)`
-- `resetExpTablePresets()`
 
 ### RPGLevel Instance
-
 - `defineExpTable(formula, options={})`
   - Set Exp-Table by formula that is  for each levels.
   - Define a fomula like `function(level){ return level * level; }`.
@@ -85,8 +80,3 @@ console.log(lv.getStates());  // -> { level:3, .. }
   - Returns your statuses about level and exps.
 - `getLevel()`
 - `isMaxLevel()`
-
-
-## Development
-### Preparation
-- Install `PhantomJS`
