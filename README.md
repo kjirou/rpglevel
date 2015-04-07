@@ -10,7 +10,6 @@ Manage the "level" and the "exp"
 ```
 npm install rpglevel
 ```
-
 Or, you can use in browser through the [browserify](https://github.com/substack/node-browserify).
 
 
